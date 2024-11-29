@@ -1,0 +1,22 @@
+{
+  "source": "src/index.ts",
+  "module": "dist/spotify-spotcast-card.js",
+  "targets": {
+    "module": {
+      "includeNodeModules": true
+    }
+  },
+  "scripts": {
+    "watch": "parcel watch",
+    "build": "parcel build"
+  },
+  "devDependencies": {
+    "@parcel/transformer-inline-string": "^2.13.2",
+    "parcel": "^2.13.2"
+  },
+  "dependencies": {
+    "custom-card-helpers": "^1.9.0",
+    "home-assistant-js-websocket": "^9.4.0",
+    "lit": "^3.2.1"
+  }
+}

@@ -1,0 +1,6 @@
+{
+    "name": "Spotify spotcast card",
+    "render_readme": true,
+    "filename": "spotify-spotcast-card.js",
+    "content_in_root": false
+  }
