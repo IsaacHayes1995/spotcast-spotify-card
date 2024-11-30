@@ -9,6 +9,12 @@ import Config from "./models/config";
 import { debounce } from "./helpers/helpers";
 import { SpotcastWebsocketService } from "./services/spotcastWebsocketService";
 import { HomeAssistant } from "custom-card-helpers";
+import { ChromecastResponse, DevicesResponse } from "./models/spotcast/device";
+import { PlayerResponse } from "./models/spotcast/player";
+import { CategoriesResponse } from "./models/spotcast/category";
+import { PlaylistsResponse } from "./models/spotcast/playlist";
+import { ViewResponse } from "./models/spotcast/view";
+import { SearchResponse } from "./models/spotcast/search";
 
 @customElement('spotcast-spotify-card')
 export class SpotcastSpotifyCard extends LitElement {
@@ -17,11 +23,13 @@ export class SpotcastSpotifyCard extends LitElement {
   public hass!: HomeAssistant;
 
   // internal reactive states
-  // @state() private _header: string | typeof nothing;
-  // @state() private _entity: string;
-  // @state() private _name: string;
-  // @state() private _state: HassEntity;
-  // @state() private _status: string;
+  @state() private _devices: DevicesResponse;
+  @state() private _player: PlayerResponse;
+  @state() private _chromecasts: ChromecastResponse;
+  @state() private _categories: CategoriesResponse;
+  @state() private _playlists: PlaylistsResponse;
+  @state() private _views: ViewResponse;
+  @state() private _search: SearchResponse;
 
   private spotcastWebsocket: SpotcastWebsocketService = new SpotcastWebsocketService(this);
 
@@ -51,15 +59,16 @@ export class SpotcastSpotifyCard extends LitElement {
   }, 500); //200 ms debounce
 
   private async retrieveAndSetDevices() {
-    await this.spotcastWebsocket.fetchDevices();
-    await this.spotcastWebsocket.fetchPlayer();
-    await this.spotcastWebsocket.fetchChromecasts();
-    var categoriesResult = await this.spotcastWebsocket.fetchCategories();
-    var categoryPlaylists = await this.spotcastWebsocket.fetchPlaylists("mikeve97", categoriesResult.categories[0].name);
+    this._devices = await this.spotcastWebsocket.fetchDevices();
+    this._player = await this.spotcastWebsocket.fetchPlayer();
+    this._chromecasts = await this.spotcastWebsocket.fetchChromecasts();
+    this._categories = await this.spotcastWebsocket.fetchCategories();
+    // var categoryPlaylists = await this.spotcastWebsocket.fetchPlaylists("mikeve97", categoriesResult.categories[0].name);
   }
 
   private async retrieveAndSetDefaultView() {
-    await this.spotcastWebsocket.fetchView();
+    this._views = await this.spotcastWebsocket.fetchView();
+    this._search = await this.spotcastWebsocket.fetchSearch("mikeve97", "This is adele", "playlist");
   }
 
   private isSpotcastInstalled() {

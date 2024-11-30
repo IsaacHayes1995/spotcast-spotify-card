@@ -31,7 +31,7 @@ export class SpotcastWebsocketService {
       type,
       ...payload,
     };
-
+    console.log(`Calling method ${type} with payload ${JSON.stringify(message)}`);
     try {
       return await this._card.hass.callWS<T>(message);
     } catch (error: any) {
@@ -101,7 +101,11 @@ export class SpotcastWebsocketService {
    * @returns A promise resolving to the view data.
    */
   async fetchView(account?: string, url: string = 'recently-played'): Promise<ViewResponse> {
-    const view = await this._callWebSocket<ViewResponse>('spotcast/view', { account, url });
+    const view = await this._callWebSocket<ViewResponse>('spotcast/view', {
+      account,
+      url,
+      limit: 20
+    });
     console.log("View fetched:", view);
     return view;
   }
@@ -110,10 +114,10 @@ export class SpotcastWebsocketService {
    * Searches Spotcast for a specific query.
    * @param account Optional account identifier.
    * @param query The search query string.
-   * @param searchType The type of search (e.g., 'track', 'album', 'artist').
+   * @param searchType The type of search (e.g., 'track', 'album', 'playlist').
    * @returns A promise resolving to the search results.
    */
-  async fetchSearch(account?: string, query: string = '', searchType: string = 'track'): Promise<SearchResponse> {
+  async fetchSearch(account?: string, query: string = '', searchType: string = 'playlist'): Promise<SearchResponse> {
     const searchResults = await this._callWebSocket<SearchResponse>('spotcast/search', { account, query, searchType });
     console.log("Search results fetched:", searchResults);
     return searchResults;

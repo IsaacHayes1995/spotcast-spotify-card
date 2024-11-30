@@ -1550,7 +1550,7 @@ class $48295ef146332563$export$7724ea7bf35195bc {
             type: type,
             ...payload
         };
-        console.log(type, message);
+        console.log(`Calling method ${type} with payload ${JSON.stringify(message)}`);
         try {
             return await this._card.hass.callWS(message);
         } catch (error) {
@@ -1619,7 +1619,8 @@ class $48295ef146332563$export$7724ea7bf35195bc {
    */ async fetchView(account, url = 'recently-played') {
         const view = await this._callWebSocket('spotcast/view', {
             account: account,
-            url: url
+            url: url,
+            limit: 20
         });
         console.log("View fetched:", view);
         return view;
@@ -1628,9 +1629,9 @@ class $48295ef146332563$export$7724ea7bf35195bc {
    * Searches Spotcast for a specific query.
    * @param account Optional account identifier.
    * @param query The search query string.
-   * @param searchType The type of search (e.g., 'track', 'album', 'artist').
+   * @param searchType The type of search (e.g., 'track', 'album', 'playlist').
    * @returns A promise resolving to the search results.
-   */ async fetchSearch(account, query = '', searchType = 'track') {
+   */ async fetchSearch(account, query = '', searchType = 'playlist') {
         const searchResults = await this._callWebSocket('spotcast/search', {
             account: account,
             query: query,
@@ -1682,6 +1683,7 @@ class $a399cc6bbb0eb26a$export$45293971107dbe62 extends (0, $ab210b2da7b39b9d$ex
     }
     async retrieveAndSetDefaultView() {
         await this.spotcastWebsocket.fetchView();
+        await this.spotcastWebsocket.fetchSearch("mikeve97", "This is adele", "playlist");
     }
     isSpotcastInstalled() {
         return !!this.hass?.connection && (0, $77cf7ce452a4fb5d$export$4673a26a10c40d3a)(this.hass.connection).state.spotcast !== undefined;
