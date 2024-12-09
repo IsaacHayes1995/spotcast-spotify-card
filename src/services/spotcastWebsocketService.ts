@@ -1,23 +1,38 @@
-import { SpotcastSpotifyCard } from "../card";
+import { HomeAssistantStoreInitialState, RetrieveState, UseHomeAssistantStore } from "../store";
 import { CategoriesResponse } from "../models/spotcast/category";
 import { ChromecastResponse, DevicesResponse } from "../models/spotcast/device";
 import { PlayerResponse } from "../models/spotcast/player";
 import { PlaylistsResponse } from "../models/spotcast/playlist";
 import { SearchResponse } from "../models/spotcast/search";
 import { ViewResponse } from "../models/spotcast/view";
+import { HomeAssistant } from "custom-card-helpers";
 
 /**
  * Service to handle WebSocket requests for Spotcast integration.
  */
 export class SpotcastWebsocketService {
-  private _card: SpotcastSpotifyCard;
 
-  /**
-   * Constructs the SpotcastWebsocketService instance.
-   * @param card Instance of SpotcastSpotifyCard for handling WebSocket calls.
-   */
-  constructor(card: SpotcastSpotifyCard) {
-    this._card = card;
+  _hass: HomeAssistant;
+
+  constructor() {
+    console.log("spotcastwebsocket constructor");
+    UseHomeAssistantStore.subscribe(async (state) => {
+      if (state.hass) {
+        this._hass = state.hass;
+      }
+      console.log("state.retrieveState", state.retrieveState);
+      if (state.retrieveState === RetrieveState.START && state.hass) { 
+        HomeAssistantStoreInitialState.setRetrieveState(RetrieveState.RETRIEVING);
+        var devices = await this.fetchDevices();
+        var player = await this.fetchPlayer();
+        var chromecasts = await this.fetchChromecasts();
+        var categories = await this.fetchCategories();
+        var categoryPlaylists = await this.fetchPlaylists("mikeve97", categories.categories[0].name);
+        var views = await this.fetchView();
+        var search = await this.fetchSearch("mikeve97", "This is adele", "playlist");
+        HomeAssistantStoreInitialState.setRetrieveState(RetrieveState.FINISHED);
+      }
+    })
   }
 
   /**
@@ -33,7 +48,7 @@ export class SpotcastWebsocketService {
     };
     console.log(`Calling method ${type} with payload ${JSON.stringify(message)}`);
     try {
-      return await this._card.hass.callWS<T>(message);
+      return await this._hass.callWS<T>(message);
     } catch (error: any) {
       throw new Error(`Failed to fetch ${type} (payload: ${JSON.stringify(message)}): ${JSON.stringify(error)}`);
     }
