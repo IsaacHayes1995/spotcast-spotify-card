@@ -1,9 +1,12 @@
 {
   "compilerOptions": {
-    "isolatedModules": true,
-    "target": "es2017",
+    "target": "esnext",
+    "module": "esnext",
     "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "useDefineForClassFields": false,
-  }
+    "baseUrl": "src"
+  },
+  "include": ["src"]
 }

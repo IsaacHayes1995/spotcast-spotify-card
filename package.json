@@ -7,16 +7,30 @@
     }
   },
   "scripts": {
-    "watch": "parcel watch",
-    "build": "parcel build"
+    "watch": "vite watch",
+    "build": "vite build",
+    "build-web": "webpack --mode production"
   },
   "devDependencies": {
-    "@parcel/transformer-inline-string": "^2.13.2",
-    "parcel": "^2.13.2"
+    "autoprefixer": "^10.4.20",
+    "daisyui": "^4.12.20",
+    "postcss": "^8.4.49",
+    "postcss-lit": "^1.1.1",
+    "postcss-loader": "^8.1.1",
+    "sass": "^1.55.0",
+    "tailwindcss": "^3.2.0",
+    "terser-webpack-plugin": "^5.3.10",
+    "ts-loader": "^9.5.1",
+    "typescript": "^4.8.4",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.1.0"
   },
   "dependencies": {
     "custom-card-helpers": "^1.9.0",
     "home-assistant-js-websocket": "^9.4.0",
-    "lit": "^3.2.1"
+    "lit": "^3.2.1",
+    "vite-plugin-css-injected-by-js": "^3.5.2",
+    "zustand": "^5.0.2"
   }
 }

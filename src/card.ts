@@ -1,8 +1,10 @@
 import { html, LitElement, TemplateResult, nothing } from "lit";
+import { state } from 'lit/decorators.js';      
+
 import { customElement } from 'lit/decorators/custom-element.js';
 
 import { styles } from "./card.styles";
-import { state } from "lit/decorators/state";
+ 
 
 import { HassEntity, servicesColl } from "home-assistant-js-websocket";
 import Config from "./models/config";
@@ -15,7 +17,10 @@ import { CategoriesResponse } from "./models/spotcast/category";
 import { PlaylistsResponse } from "./models/spotcast/playlist";
 import { ViewResponse } from "./models/spotcast/view";
 import { SearchResponse } from "./models/spotcast/search";
+import { Skeleton } from "./components/skeleton";
 
+
+console.info("Spotcast spotify card loaded version 0.0.1");
 @customElement('spotcast-spotify-card')
 export class SpotcastSpotifyCard extends LitElement {
   // declarative part
@@ -72,25 +77,15 @@ export class SpotcastSpotifyCard extends LitElement {
   }
 
   private isSpotcastInstalled() {
+    // @ts-ignore
     return !!this.hass?.connection && servicesColl(this.hass.connection).state.spotcast !== undefined;
   }
 
 
   render() {
-    var content = html`
-        <dl class="dl">
-          <dt class="dt">Test</dt>
-          <dd class="dd">
-            Data
-          </dd>
-          <dd class="error">
-            Data-error
-          </dd>
-        </dl>
-      `;
     return html`
       <ha-card header="Spotcast spotify card">
-        <div class="card-content">${content}</div>
+        <div class="card-content">${Skeleton.getTemplate()}</div>
       </ha-card>
     `;
   }
@@ -107,3 +102,4 @@ export class SpotcastSpotifyCard extends LitElement {
     };
   }
 }
+
