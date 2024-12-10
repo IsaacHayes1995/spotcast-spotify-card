@@ -11,8 +11,10 @@ import { debounce } from "./helpers/helpers";
 import { HomeAssistant } from "custom-card-helpers";
 import { HomeAssistantStoreInitialState, UseHomeAssistantStore } from "./store";
 import { PlaylistView } from "./components/playlistView";
+import { HeaderView } from "./components/HeaderView";
+import { CurrentlyPlayingView } from "./components/CurrentlyPlayingView";
 
-console.info("Spotcast spotify card with zustand, lit and tailwind, tracks endpoint");
+console.info("Spotcast spotify card UI fase ");
 @customElement('spotcast-spotify-card')
 export class SpotcastSpotifyCard extends LitElement {
   // declarative part
@@ -31,12 +33,12 @@ export class SpotcastSpotifyCard extends LitElement {
   // Updates whenever the `hass` property changes
   // This happens if anything changes state in homeassistant
   set hass(hass: HomeAssistant | undefined) {
-    HomeAssistantStoreInitialState.setHass(hass);
+    // HomeAssistantStoreInitialState.setHass(hass);
     // this.debouncedRetrieveAndSetDevices();
   }
 
   setConfig(config: Config) {
-    HomeAssistantStoreInitialState.setConfig(config);
+    // HomeAssistantStoreInitialState.setConfig(config);
   }
 
   connectedCallback(): void {
@@ -56,8 +58,12 @@ export class SpotcastSpotifyCard extends LitElement {
 
   render() {
     return html`
-      <ha-card header="Spotcast spotify card">
-        <div class="card-content">${PlaylistView.getTemplate()}</div>
+      <ha-card>
+        <div class="card-content">
+          ${HeaderView.getTemplate()}
+          ${PlaylistView.getTemplate()}
+          ${CurrentlyPlayingView.getTemplate()}
+        </div>
       </ha-card>
     `;
   }
