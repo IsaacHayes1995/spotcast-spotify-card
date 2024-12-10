@@ -1,6 +1,6 @@
 export interface PlaylistItem {
     id: string | null;
     name: string;
-    href: string;
+    uri: string;
     icon?: string | null;
 }

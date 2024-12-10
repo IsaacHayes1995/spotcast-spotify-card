@@ -21,7 +21,7 @@ export class SpotcastWebsocketService {
         this._hass = state.hass;
       }
       console.log("state.retrieveState", state.retrieveState);
-      if (state.retrieveState === RetrieveState.START && state.hass) { 
+      if (state.retrieveState === RetrieveState.INITIAL && state.hass && state.config) { 
         HomeAssistantStoreInitialState.setRetrieveState(RetrieveState.RETRIEVING);
         var devices = await this.fetchDevices();
         var player = await this.fetchPlayer();
@@ -30,6 +30,9 @@ export class SpotcastWebsocketService {
         var categoryPlaylists = await this.fetchPlaylists("mikeve97", categories.categories[0].name);
         var views = await this.fetchView();
         var search = await this.fetchSearch("mikeve97", "This is adele", "playlist");
+        var tracks = await this.fetchTracks("mikeve97", "37i9dQZF1E8KQMxdQmr5oL");
+        var liked_tracks = await this.fetchLikedMedia();
+        console.log(tracks);
         HomeAssistantStoreInitialState.setRetrieveState(RetrieveState.FINISHED);
       }
     })
@@ -136,5 +139,28 @@ export class SpotcastWebsocketService {
     const searchResults = await this._callWebSocket<SearchResponse>('spotcast/search', { account, query, searchType });
     console.log("Search results fetched:", searchResults);
     return searchResults;
+  }
+
+  /**
+   * Searches Spotcast for a specific query.
+   * @param account Optional account identifier.
+   * @param url The url of the playlist
+   * @returns A promise resolving to the search results.
+   */
+  async fetchTracks(account?: string, playlistId: string = ''): Promise<any> {
+    const tracks = await this._callWebSocket<any>('spotcast/tracks', { account, playlistId });
+    console.log("tracks fetched:", tracks);
+    return tracks;
+  }
+
+  /**
+   * Gets the users liked media
+   * @param account Optional account identifier.
+   * @returns A promise resolving to the search results.
+   */
+  async fetchLikedMedia(account?: string): Promise<any> {
+    const tracks = await this._callWebSocket<any>('spotcast/liked_media', { account });
+    console.log("tracks fetched:", tracks);
+    return tracks;
   }
 }

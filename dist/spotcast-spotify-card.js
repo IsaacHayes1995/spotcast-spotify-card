@@ -1,4 +1,4 @@
-(()=>{"use strict";const t=t=>{let e;const s=new Set,i=(t,i)=>{const r="function"==typeof t?t(e):t;if(!Object.is(r,e)){const t=e;e=(null!=i?i:"object"!=typeof r||null===r)?r:Object.assign({},e,r),s.forEach((s=>s(e,t)))}},r=()=>e,o={setState:i,getState:r,getInitialState:()=>n,subscribe:t=>(s.add(t),()=>s.delete(t))},n=e=t(i,r,o);return o};var e;!function(t){t.INITIAL="INITIAL",t.START="START",t.FAILED="FAILED",t.FINISHED="FINISHED",t.RETRIEVING="RETRIEVING"}(e||(e={}));const s=(i=t=>({hass:null,setHass:e=>t({hass:e}),config:null,setConfig:e=>t({config:e}),retrieveState:e.INITIAL,setRetrieveState:e=>t({retrieveState:e})}),i?t(i):t);var i;const r=s.getInitialState();const o=globalThis,n=o.ShadowRoot&&(void 0===o.ShadyCSS||o.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,a=Symbol(),c=new WeakMap;class l{constructor(t,e,s){if(this._$cssResult$=!0,s!==a)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const e=this.t;if(n&&void 0===t){const s=void 0!==e&&1===e.length;s&&(t=c.get(e)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),s&&c.set(e,t))}return t}toString(){return this.cssText}}const d=(t,e)=>{if(n)t.adoptedStyleSheets=e.map((t=>t instanceof CSSStyleSheet?t:t.styleSheet));else for(const s of e){const e=document.createElement("style"),i=o.litNonce;void 0!==i&&e.setAttribute("nonce",i),e.textContent=s.cssText,t.appendChild(e)}},h=n?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const s of t.cssRules)e+=s.cssText;return(t=>new l("string"==typeof t?t:t+"",void 0,a))(e)})(t):t,{is:p,defineProperty:u,getOwnPropertyDescriptor:f,getOwnPropertyNames:b,getOwnPropertySymbols:g,getPrototypeOf:m}=Object,w=globalThis,y=w.trustedTypes,v=y?y.emptyScript:"",$=w.reactiveElementPolyfillSupport,_=(t,e)=>t,k={toAttribute(t,e){switch(e){case Boolean:t=t?v:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let s=t;switch(e){case Boolean:s=null!==t;break;case Number:s=null===t?null:Number(t);break;case Object:case Array:try{s=JSON.parse(t)}catch(t){s=null}}return s}},S=(t,e)=>!p(t,e),A={attribute:!0,type:String,converter:k,reflect:!1,hasChanged:S};Symbol.metadata??=Symbol("metadata"),w.litPropertyMetadata??=new WeakMap;class x extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=A){if(e.state&&(e.attribute=!1),this._$Ei(),this.elementProperties.set(t,e),!e.noAccessor){const s=Symbol(),i=this.getPropertyDescriptor(t,s,e);void 0!==i&&u(this.prototype,t,i)}}static getPropertyDescriptor(t,e,s){const{get:i,set:r}=f(this.prototype,t)??{get(){return this[e]},set(t){this[e]=t}};return{get(){return i?.call(this)},set(e){const o=i?.call(this);r.call(this,e),this.requestUpdate(t,o,s)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??A}static _$Ei(){if(this.hasOwnProperty(_("elementProperties")))return;const t=m(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty(_("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty(_("properties"))){const t=this.properties,e=[...b(t),...g(t)];for(const s of e)this.createProperty(s,t[s])}const t=this[Symbol.metadata];if(null!==t){const e=litPropertyMetadata.get(t);if(void 0!==e)for(const[t,s]of e)this.elementProperties.set(t,s)}this._$Eh=new Map;for(const[t,e]of this.elementProperties){const s=this._$Eu(t,e);void 0!==s&&this._$Eh.set(s,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const s=new Set(t.flat(1/0).reverse());for(const t of s)e.unshift(h(t))}else void 0!==t&&e.push(h(t));return e}static _$Eu(t,e){const s=e.attribute;return!1===s?void 0:"string"==typeof s?s:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise((t=>this.enableUpdating=t)),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach((t=>t(this)))}addController(t){(this._$EO??=new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){const t=new Map,e=this.constructor.elementProperties;for(const s of e.keys())this.hasOwnProperty(s)&&(t.set(s,this[s]),delete this[s]);t.size>0&&(this._$Ep=t)}createRenderRoot(){const t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return d(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach((t=>t.hostConnected?.()))}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach((t=>t.hostDisconnected?.()))}attributeChangedCallback(t,e,s){this._$AK(t,s)}_$EC(t,e){const s=this.constructor.elementProperties.get(t),i=this.constructor._$Eu(t,s);if(void 0!==i&&!0===s.reflect){const r=(void 0!==s.converter?.toAttribute?s.converter:k).toAttribute(e,s.type);this._$Em=t,null==r?this.removeAttribute(i):this.setAttribute(i,r),this._$Em=null}}_$AK(t,e){const s=this.constructor,i=s._$Eh.get(t);if(void 0!==i&&this._$Em!==i){const t=s.getPropertyOptions(i),r="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:k;this._$Em=i,this[i]=r.fromAttribute(e,t.type),this._$Em=null}}requestUpdate(t,e,s){if(void 0!==t){if(s??=this.constructor.getPropertyOptions(t),!(s.hasChanged??S)(this[t],e))return;this.P(t,e,s)}!1===this.isUpdatePending&&(this._$ES=this._$ET())}P(t,e,s){this._$AL.has(t)||this._$AL.set(t,e),!0===s.reflect&&this._$Em!==t&&(this._$Ej??=new Set).add(t)}async _$ET(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,e]of this._$Ep)this[t]=e;this._$Ep=void 0}const t=this.constructor.elementProperties;if(t.size>0)for(const[e,s]of t)!0!==s.wrapped||this._$AL.has(e)||void 0===this[e]||this.P(e,this[e],s)}let t=!1;const e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach((t=>t.hostUpdate?.())),this.update(e)):this._$EU()}catch(e){throw t=!1,this._$EU(),e}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach((t=>t.hostUpdated?.())),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EU(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Ej&&=this._$Ej.forEach((t=>this._$EC(t,this[t]))),this._$EU()}updated(t){}firstUpdated(t){}}x.elementStyles=[],x.shadowRootOptions={mode:"open"},x[_("elementProperties")]=new Map,x[_("finalized")]=new Map,$?.({ReactiveElement:x}),(w.reactiveElementVersions??=[]).push("2.0.4");const E=globalThis,C=E.trustedTypes,P=C?C.createPolicy("lit-html",{createHTML:t=>t}):void 0,T="$lit$",R=`lit$${Math.random().toFixed(9).slice(2)}$`,U="?"+R,O=`<${U}>`,z=document,N=()=>z.createComment(""),I=t=>null===t||"object"!=typeof t&&"function"!=typeof t,H=Array.isArray,M=t=>H(t)||"function"==typeof t?.[Symbol.iterator],j="[ \t\n\f\r]",L=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,D=/-->/g,W=/>/g,F=RegExp(`>|${j}(?:([^\\s"'>=/]+)(${j}*=${j}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),V=/'/g,B=/"/g,q=/^(?:script|style|textarea|title)$/i,G=t=>(e,...s)=>({_$litType$:t,strings:e,values:s}),J=G(1),Y=(G(2),G(3),Symbol.for("lit-noChange")),K=Symbol.for("lit-nothing"),Z=new WeakMap,Q=z.createTreeWalker(z,129);function X(t,e){if(!H(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==P?P.createHTML(e):e}const tt=(t,e)=>{const s=t.length-1,i=[];let r,o=2===e?"<svg>":3===e?"<math>":"",n=L;for(let e=0;e<s;e++){const s=t[e];let a,c,l=-1,d=0;for(;d<s.length&&(n.lastIndex=d,c=n.exec(s),null!==c);)d=n.lastIndex,n===L?"!--"===c[1]?n=D:void 0!==c[1]?n=W:void 0!==c[2]?(q.test(c[2])&&(r=RegExp("</"+c[2],"g")),n=F):void 0!==c[3]&&(n=F):n===F?">"===c[0]?(n=r??L,l=-1):void 0===c[1]?l=-2:(l=n.lastIndex-c[2].length,a=c[1],n=void 0===c[3]?F:'"'===c[3]?B:V):n===B||n===V?n=F:n===D||n===W?n=L:(n=F,r=void 0);const h=n===F&&t[e+1].startsWith("/>")?" ":"";o+=n===L?s+O:l>=0?(i.push(a),s.slice(0,l)+T+s.slice(l)+R+h):s+R+(-2===l?e:h)}return[X(t,o+(t[s]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),i]};class et{constructor({strings:t,_$litType$:e},s){let i;this.parts=[];let r=0,o=0;const n=t.length-1,a=this.parts,[c,l]=tt(t,e);if(this.el=et.createElement(c,s),Q.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(i=Q.nextNode())&&a.length<n;){if(1===i.nodeType){if(i.hasAttributes())for(const t of i.getAttributeNames())if(t.endsWith(T)){const e=l[o++],s=i.getAttribute(t).split(R),n=/([.?@])?(.*)/.exec(e);a.push({type:1,index:r,name:n[2],strings:s,ctor:"."===n[1]?nt:"?"===n[1]?at:"@"===n[1]?ct:ot}),i.removeAttribute(t)}else t.startsWith(R)&&(a.push({type:6,index:r}),i.removeAttribute(t));if(q.test(i.tagName)){const t=i.textContent.split(R),e=t.length-1;if(e>0){i.textContent=C?C.emptyScript:"";for(let s=0;s<e;s++)i.append(t[s],N()),Q.nextNode(),a.push({type:2,index:++r});i.append(t[e],N())}}}else if(8===i.nodeType)if(i.data===U)a.push({type:2,index:r});else{let t=-1;for(;-1!==(t=i.data.indexOf(R,t+1));)a.push({type:7,index:r}),t+=R.length-1}r++}}static createElement(t,e){const s=z.createElement("template");return s.innerHTML=t,s}}function st(t,e,s=t,i){if(e===Y)return e;let r=void 0!==i?s._$Co?.[i]:s._$Cl;const o=I(e)?void 0:e._$litDirective$;return r?.constructor!==o&&(r?._$AO?.(!1),void 0===o?r=void 0:(r=new o(t),r._$AT(t,s,i)),void 0!==i?(s._$Co??=[])[i]=r:s._$Cl=r),void 0!==r&&(e=st(t,r._$AS(t,e.values),r,i)),e}class it{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:s}=this._$AD,i=(t?.creationScope??z).importNode(e,!0);Q.currentNode=i;let r=Q.nextNode(),o=0,n=0,a=s[0];for(;void 0!==a;){if(o===a.index){let e;2===a.type?e=new rt(r,r.nextSibling,this,t):1===a.type?e=new a.ctor(r,a.name,a.strings,this,t):6===a.type&&(e=new lt(r,this,t)),this._$AV.push(e),a=s[++n]}o!==a?.index&&(r=Q.nextNode(),o++)}return Q.currentNode=z,i}p(t){let e=0;for(const s of this._$AV)void 0!==s&&(void 0!==s.strings?(s._$AI(t,s,e),e+=s.strings.length-2):s._$AI(t[e])),e++}}class rt{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,s,i){this.type=2,this._$AH=K,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=s,this.options=i,this._$Cv=i?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=st(this,t,e),I(t)?t===K||null==t||""===t?(this._$AH!==K&&this._$AR(),this._$AH=K):t!==this._$AH&&t!==Y&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):M(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==K&&I(this._$AH)?this._$AA.nextSibling.data=t:this.T(z.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:s}=t,i="number"==typeof s?this._$AC(t):(void 0===s.el&&(s.el=et.createElement(X(s.h,s.h[0]),this.options)),s);if(this._$AH?._$AD===i)this._$AH.p(e);else{const t=new it(i,this),s=t.u(this.options);t.p(e),this.T(s),this._$AH=t}}_$AC(t){let e=Z.get(t.strings);return void 0===e&&Z.set(t.strings,e=new et(t)),e}k(t){H(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let s,i=0;for(const r of t)i===e.length?e.push(s=new rt(this.O(N()),this.O(N()),this,this.options)):s=e[i],s._$AI(r),i++;i<e.length&&(this._$AR(s&&s._$AB.nextSibling,i),e.length=i)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t&&t!==this._$AB;){const e=t.nextSibling;t.remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class ot{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,s,i,r){this.type=1,this._$AH=K,this._$AN=void 0,this.element=t,this.name=e,this._$AM=i,this.options=r,s.length>2||""!==s[0]||""!==s[1]?(this._$AH=Array(s.length-1).fill(new String),this.strings=s):this._$AH=K}_$AI(t,e=this,s,i){const r=this.strings;let o=!1;if(void 0===r)t=st(this,t,e,0),o=!I(t)||t!==this._$AH&&t!==Y,o&&(this._$AH=t);else{const i=t;let n,a;for(t=r[0],n=0;n<r.length-1;n++)a=st(this,i[s+n],e,n),a===Y&&(a=this._$AH[n]),o||=!I(a)||a!==this._$AH[n],a===K?t=K:t!==K&&(t+=(a??"")+r[n+1]),this._$AH[n]=a}o&&!i&&this.j(t)}j(t){t===K?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class nt extends ot{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===K?void 0:t}}class at extends ot{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==K)}}class ct extends ot{constructor(t,e,s,i,r){super(t,e,s,i,r),this.type=5}_$AI(t,e=this){if((t=st(this,t,e,0)??K)===Y)return;const s=this._$AH,i=t===K&&s!==K||t.capture!==s.capture||t.once!==s.once||t.passive!==s.passive,r=t!==K&&(s===K||i);i&&this.element.removeEventListener(this.name,this,s),r&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class lt{constructor(t,e,s){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=s}get _$AU(){return this._$AM._$AU}_$AI(t){st(this,t)}}const dt=E.litHtmlPolyfillSupport;dt?.(et,rt),(E.litHtmlVersions??=[]).push("3.2.1");class ht extends x{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,s)=>{const i=s?.renderBefore??e;let r=i._$litPart$;if(void 0===r){const t=s?.renderBefore??null;i._$litPart$=r=new rt(e.insertBefore(N(),t),t,void 0,s??{})}return r._$AI(t),r})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return Y}}ht._$litElement$=!0,ht.finalized=!0,globalThis.litElementHydrateSupport?.({LitElement:ht});const pt=globalThis.litElementPolyfillSupport;pt?.({LitElement:ht});(globalThis.litElementVersions??=[]).push("4.1.1");const ut={attribute:!0,type:String,converter:k,reflect:!1,hasChanged:S},ft=(t=ut,e,s)=>{const{kind:i,metadata:r}=s;let o=globalThis.litPropertyMetadata.get(r);if(void 0===o&&globalThis.litPropertyMetadata.set(r,o=new Map),o.set(s.name,t),"accessor"===i){const{name:i}=s;return{set(s){const r=e.get.call(this);e.set.call(this,s),this.requestUpdate(i,r,t)},init(e){return void 0!==e&&this.P(i,void 0,t),e}}}if("setter"===i){const{name:i}=s;return function(s){const r=this[i];e.call(this,s),this.requestUpdate(i,r,t)}}throw Error("Unsupported decorator location: "+i)};function bt(t){return function(t){return(e,s)=>"object"==typeof s?ft(t,e,s):((t,e,s)=>{const i=e.hasOwnProperty(s);return e.constructor.createProperty(s,i?{...t,wrapped:!0}:t),i?Object.getOwnPropertyDescriptor(e,s):void 0})(t,e,s)}({...t,state:!0,attribute:!1})}const gt=((t,...e)=>{const s=1===t.length?t[0]:e.reduce(((e,s,i)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(s)+t[i+1]),t[0]);return new l(s,t,a)})`
+(()=>{"use strict";const t=t=>{let e;const i=new Set,r=(t,r)=>{const o="function"==typeof t?t(e):t;if(!Object.is(o,e)){const t=e;e=(null!=r?r:"object"!=typeof o||null===o)?o:Object.assign({},e,o),i.forEach((i=>i(e,t)))}},o=()=>e,s={setState:r,getState:o,getInitialState:()=>a,subscribe:t=>(i.add(t),()=>i.delete(t))},a=e=t(r,o,s);return s};var e;!function(t){t.INITIAL="INITIAL",t.START="START",t.FAILED="FAILED",t.FINISHED="FINISHED",t.RETRIEVING="RETRIEVING"}(e||(e={}));const i=(r=t=>({hass:null,setHass:e=>t({hass:e}),config:null,setConfig:e=>t({config:e}),retrieveState:e.INITIAL,setRetrieveState:e=>t({retrieveState:e})}),r?t(r):t);var r;const o=i.getInitialState();const s=globalThis,a=s.ShadowRoot&&(void 0===s.ShadyCSS||s.ShadyCSS.nativeShadow)&&"adoptedStyleSheets"in Document.prototype&&"replace"in CSSStyleSheet.prototype,n=Symbol(),c=new WeakMap;class l{constructor(t,e,i){if(this._$cssResult$=!0,i!==n)throw Error("CSSResult is not constructable. Use `unsafeCSS` or `css` instead.");this.cssText=t,this.t=e}get styleSheet(){let t=this.o;const e=this.t;if(a&&void 0===t){const i=void 0!==e&&1===e.length;i&&(t=c.get(e)),void 0===t&&((this.o=t=new CSSStyleSheet).replaceSync(this.cssText),i&&c.set(e,t))}return t}toString(){return this.cssText}}const d=(t,e)=>{if(a)t.adoptedStyleSheets=e.map((t=>t instanceof CSSStyleSheet?t:t.styleSheet));else for(const i of e){const e=document.createElement("style"),r=s.litNonce;void 0!==r&&e.setAttribute("nonce",r),e.textContent=i.cssText,t.appendChild(e)}},h=a?t=>t:t=>t instanceof CSSStyleSheet?(t=>{let e="";for(const i of t.cssRules)e+=i.cssText;return(t=>new l("string"==typeof t?t:t+"",void 0,n))(e)})(t):t,{is:p,defineProperty:b,getOwnPropertyDescriptor:u,getOwnPropertyNames:f,getOwnPropertySymbols:g,getPrototypeOf:m}=Object,w=globalThis,v=w.trustedTypes,y=v?v.emptyScript:"",k=w.reactiveElementPolyfillSupport,$=(t,e)=>t,_={toAttribute(t,e){switch(e){case Boolean:t=t?y:null;break;case Object:case Array:t=null==t?t:JSON.stringify(t)}return t},fromAttribute(t,e){let i=t;switch(e){case Boolean:i=null!==t;break;case Number:i=null===t?null:Number(t);break;case Object:case Array:try{i=JSON.parse(t)}catch(t){i=null}}return i}},x=(t,e)=>!p(t,e),S={attribute:!0,type:String,converter:_,reflect:!1,hasChanged:x};Symbol.metadata??=Symbol("metadata"),w.litPropertyMetadata??=new WeakMap;class A extends HTMLElement{static addInitializer(t){this._$Ei(),(this.l??=[]).push(t)}static get observedAttributes(){return this.finalize(),this._$Eh&&[...this._$Eh.keys()]}static createProperty(t,e=S){if(e.state&&(e.attribute=!1),this._$Ei(),this.elementProperties.set(t,e),!e.noAccessor){const i=Symbol(),r=this.getPropertyDescriptor(t,i,e);void 0!==r&&b(this.prototype,t,r)}}static getPropertyDescriptor(t,e,i){const{get:r,set:o}=u(this.prototype,t)??{get(){return this[e]},set(t){this[e]=t}};return{get(){return r?.call(this)},set(e){const s=r?.call(this);o.call(this,e),this.requestUpdate(t,s,i)},configurable:!0,enumerable:!0}}static getPropertyOptions(t){return this.elementProperties.get(t)??S}static _$Ei(){if(this.hasOwnProperty($("elementProperties")))return;const t=m(this);t.finalize(),void 0!==t.l&&(this.l=[...t.l]),this.elementProperties=new Map(t.elementProperties)}static finalize(){if(this.hasOwnProperty($("finalized")))return;if(this.finalized=!0,this._$Ei(),this.hasOwnProperty($("properties"))){const t=this.properties,e=[...f(t),...g(t)];for(const i of e)this.createProperty(i,t[i])}const t=this[Symbol.metadata];if(null!==t){const e=litPropertyMetadata.get(t);if(void 0!==e)for(const[t,i]of e)this.elementProperties.set(t,i)}this._$Eh=new Map;for(const[t,e]of this.elementProperties){const i=this._$Eu(t,e);void 0!==i&&this._$Eh.set(i,t)}this.elementStyles=this.finalizeStyles(this.styles)}static finalizeStyles(t){const e=[];if(Array.isArray(t)){const i=new Set(t.flat(1/0).reverse());for(const t of i)e.unshift(h(t))}else void 0!==t&&e.push(h(t));return e}static _$Eu(t,e){const i=e.attribute;return!1===i?void 0:"string"==typeof i?i:"string"==typeof t?t.toLowerCase():void 0}constructor(){super(),this._$Ep=void 0,this.isUpdatePending=!1,this.hasUpdated=!1,this._$Em=null,this._$Ev()}_$Ev(){this._$ES=new Promise((t=>this.enableUpdating=t)),this._$AL=new Map,this._$E_(),this.requestUpdate(),this.constructor.l?.forEach((t=>t(this)))}addController(t){(this._$EO??=new Set).add(t),void 0!==this.renderRoot&&this.isConnected&&t.hostConnected?.()}removeController(t){this._$EO?.delete(t)}_$E_(){const t=new Map,e=this.constructor.elementProperties;for(const i of e.keys())this.hasOwnProperty(i)&&(t.set(i,this[i]),delete this[i]);t.size>0&&(this._$Ep=t)}createRenderRoot(){const t=this.shadowRoot??this.attachShadow(this.constructor.shadowRootOptions);return d(t,this.constructor.elementStyles),t}connectedCallback(){this.renderRoot??=this.createRenderRoot(),this.enableUpdating(!0),this._$EO?.forEach((t=>t.hostConnected?.()))}enableUpdating(t){}disconnectedCallback(){this._$EO?.forEach((t=>t.hostDisconnected?.()))}attributeChangedCallback(t,e,i){this._$AK(t,i)}_$EC(t,e){const i=this.constructor.elementProperties.get(t),r=this.constructor._$Eu(t,i);if(void 0!==r&&!0===i.reflect){const o=(void 0!==i.converter?.toAttribute?i.converter:_).toAttribute(e,i.type);this._$Em=t,null==o?this.removeAttribute(r):this.setAttribute(r,o),this._$Em=null}}_$AK(t,e){const i=this.constructor,r=i._$Eh.get(t);if(void 0!==r&&this._$Em!==r){const t=i.getPropertyOptions(r),o="function"==typeof t.converter?{fromAttribute:t.converter}:void 0!==t.converter?.fromAttribute?t.converter:_;this._$Em=r,this[r]=o.fromAttribute(e,t.type),this._$Em=null}}requestUpdate(t,e,i){if(void 0!==t){if(i??=this.constructor.getPropertyOptions(t),!(i.hasChanged??x)(this[t],e))return;this.P(t,e,i)}!1===this.isUpdatePending&&(this._$ES=this._$ET())}P(t,e,i){this._$AL.has(t)||this._$AL.set(t,e),!0===i.reflect&&this._$Em!==t&&(this._$Ej??=new Set).add(t)}async _$ET(){this.isUpdatePending=!0;try{await this._$ES}catch(t){Promise.reject(t)}const t=this.scheduleUpdate();return null!=t&&await t,!this.isUpdatePending}scheduleUpdate(){return this.performUpdate()}performUpdate(){if(!this.isUpdatePending)return;if(!this.hasUpdated){if(this.renderRoot??=this.createRenderRoot(),this._$Ep){for(const[t,e]of this._$Ep)this[t]=e;this._$Ep=void 0}const t=this.constructor.elementProperties;if(t.size>0)for(const[e,i]of t)!0!==i.wrapped||this._$AL.has(e)||void 0===this[e]||this.P(e,this[e],i)}let t=!1;const e=this._$AL;try{t=this.shouldUpdate(e),t?(this.willUpdate(e),this._$EO?.forEach((t=>t.hostUpdate?.())),this.update(e)):this._$EU()}catch(e){throw t=!1,this._$EU(),e}t&&this._$AE(e)}willUpdate(t){}_$AE(t){this._$EO?.forEach((t=>t.hostUpdated?.())),this.hasUpdated||(this.hasUpdated=!0,this.firstUpdated(t)),this.updated(t)}_$EU(){this._$AL=new Map,this.isUpdatePending=!1}get updateComplete(){return this.getUpdateComplete()}getUpdateComplete(){return this._$ES}shouldUpdate(t){return!0}update(t){this._$Ej&&=this._$Ej.forEach((t=>this._$EC(t,this[t]))),this._$EU()}updated(t){}firstUpdated(t){}}A.elementStyles=[],A.shadowRootOptions={mode:"open"},A[$("elementProperties")]=new Map,A[$("finalized")]=new Map,k?.({ReactiveElement:A}),(w.reactiveElementVersions??=[]).push("2.0.4");const E=globalThis,C=E.trustedTypes,z=C?C.createPolicy("lit-html",{createHTML:t=>t}):void 0,T="$lit$",P=`lit$${Math.random().toFixed(9).slice(2)}$`,R="?"+P,U=`<${R}>`,O=document,I=()=>O.createComment(""),N=t=>null===t||"object"!=typeof t&&"function"!=typeof t,M=Array.isArray,H=t=>M(t)||"function"==typeof t?.[Symbol.iterator],j="[ \t\n\f\r]",L=/<(?:(!--|\/[^a-zA-Z])|(\/?[a-zA-Z][^>\s]*)|(\/?$))/g,D=/-->/g,F=/>/g,W=RegExp(`>|${j}(?:([^\\s"'>=/]+)(${j}*=${j}*(?:[^ \t\n\f\r"'\`<>=]|("|')|))|$)`,"g"),V=/'/g,B=/"/g,q=/^(?:script|style|textarea|title)$/i,J=t=>(e,...i)=>({_$litType$:t,strings:e,values:i}),Z=J(1),G=(J(2),J(3),Symbol.for("lit-noChange")),Y=Symbol.for("lit-nothing"),K=new WeakMap,Q=O.createTreeWalker(O,129);function X(t,e){if(!M(t)||!t.hasOwnProperty("raw"))throw Error("invalid template strings array");return void 0!==z?z.createHTML(e):e}const tt=(t,e)=>{const i=t.length-1,r=[];let o,s=2===e?"<svg>":3===e?"<math>":"",a=L;for(let e=0;e<i;e++){const i=t[e];let n,c,l=-1,d=0;for(;d<i.length&&(a.lastIndex=d,c=a.exec(i),null!==c);)d=a.lastIndex,a===L?"!--"===c[1]?a=D:void 0!==c[1]?a=F:void 0!==c[2]?(q.test(c[2])&&(o=RegExp("</"+c[2],"g")),a=W):void 0!==c[3]&&(a=W):a===W?">"===c[0]?(a=o??L,l=-1):void 0===c[1]?l=-2:(l=a.lastIndex-c[2].length,n=c[1],a=void 0===c[3]?W:'"'===c[3]?B:V):a===B||a===V?a=W:a===D||a===F?a=L:(a=W,o=void 0);const h=a===W&&t[e+1].startsWith("/>")?" ":"";s+=a===L?i+U:l>=0?(r.push(n),i.slice(0,l)+T+i.slice(l)+P+h):i+P+(-2===l?e:h)}return[X(t,s+(t[i]||"<?>")+(2===e?"</svg>":3===e?"</math>":"")),r]};class et{constructor({strings:t,_$litType$:e},i){let r;this.parts=[];let o=0,s=0;const a=t.length-1,n=this.parts,[c,l]=tt(t,e);if(this.el=et.createElement(c,i),Q.currentNode=this.el.content,2===e||3===e){const t=this.el.content.firstChild;t.replaceWith(...t.childNodes)}for(;null!==(r=Q.nextNode())&&n.length<a;){if(1===r.nodeType){if(r.hasAttributes())for(const t of r.getAttributeNames())if(t.endsWith(T)){const e=l[s++],i=r.getAttribute(t).split(P),a=/([.?@])?(.*)/.exec(e);n.push({type:1,index:o,name:a[2],strings:i,ctor:"."===a[1]?at:"?"===a[1]?nt:"@"===a[1]?ct:st}),r.removeAttribute(t)}else t.startsWith(P)&&(n.push({type:6,index:o}),r.removeAttribute(t));if(q.test(r.tagName)){const t=r.textContent.split(P),e=t.length-1;if(e>0){r.textContent=C?C.emptyScript:"";for(let i=0;i<e;i++)r.append(t[i],I()),Q.nextNode(),n.push({type:2,index:++o});r.append(t[e],I())}}}else if(8===r.nodeType)if(r.data===R)n.push({type:2,index:o});else{let t=-1;for(;-1!==(t=r.data.indexOf(P,t+1));)n.push({type:7,index:o}),t+=P.length-1}o++}}static createElement(t,e){const i=O.createElement("template");return i.innerHTML=t,i}}function it(t,e,i=t,r){if(e===G)return e;let o=void 0!==r?i._$Co?.[r]:i._$Cl;const s=N(e)?void 0:e._$litDirective$;return o?.constructor!==s&&(o?._$AO?.(!1),void 0===s?o=void 0:(o=new s(t),o._$AT(t,i,r)),void 0!==r?(i._$Co??=[])[r]=o:i._$Cl=o),void 0!==o&&(e=it(t,o._$AS(t,e.values),o,r)),e}class rt{constructor(t,e){this._$AV=[],this._$AN=void 0,this._$AD=t,this._$AM=e}get parentNode(){return this._$AM.parentNode}get _$AU(){return this._$AM._$AU}u(t){const{el:{content:e},parts:i}=this._$AD,r=(t?.creationScope??O).importNode(e,!0);Q.currentNode=r;let o=Q.nextNode(),s=0,a=0,n=i[0];for(;void 0!==n;){if(s===n.index){let e;2===n.type?e=new ot(o,o.nextSibling,this,t):1===n.type?e=new n.ctor(o,n.name,n.strings,this,t):6===n.type&&(e=new lt(o,this,t)),this._$AV.push(e),n=i[++a]}s!==n?.index&&(o=Q.nextNode(),s++)}return Q.currentNode=O,r}p(t){let e=0;for(const i of this._$AV)void 0!==i&&(void 0!==i.strings?(i._$AI(t,i,e),e+=i.strings.length-2):i._$AI(t[e])),e++}}class ot{get _$AU(){return this._$AM?._$AU??this._$Cv}constructor(t,e,i,r){this.type=2,this._$AH=Y,this._$AN=void 0,this._$AA=t,this._$AB=e,this._$AM=i,this.options=r,this._$Cv=r?.isConnected??!0}get parentNode(){let t=this._$AA.parentNode;const e=this._$AM;return void 0!==e&&11===t?.nodeType&&(t=e.parentNode),t}get startNode(){return this._$AA}get endNode(){return this._$AB}_$AI(t,e=this){t=it(this,t,e),N(t)?t===Y||null==t||""===t?(this._$AH!==Y&&this._$AR(),this._$AH=Y):t!==this._$AH&&t!==G&&this._(t):void 0!==t._$litType$?this.$(t):void 0!==t.nodeType?this.T(t):H(t)?this.k(t):this._(t)}O(t){return this._$AA.parentNode.insertBefore(t,this._$AB)}T(t){this._$AH!==t&&(this._$AR(),this._$AH=this.O(t))}_(t){this._$AH!==Y&&N(this._$AH)?this._$AA.nextSibling.data=t:this.T(O.createTextNode(t)),this._$AH=t}$(t){const{values:e,_$litType$:i}=t,r="number"==typeof i?this._$AC(t):(void 0===i.el&&(i.el=et.createElement(X(i.h,i.h[0]),this.options)),i);if(this._$AH?._$AD===r)this._$AH.p(e);else{const t=new rt(r,this),i=t.u(this.options);t.p(e),this.T(i),this._$AH=t}}_$AC(t){let e=K.get(t.strings);return void 0===e&&K.set(t.strings,e=new et(t)),e}k(t){M(this._$AH)||(this._$AH=[],this._$AR());const e=this._$AH;let i,r=0;for(const o of t)r===e.length?e.push(i=new ot(this.O(I()),this.O(I()),this,this.options)):i=e[r],i._$AI(o),r++;r<e.length&&(this._$AR(i&&i._$AB.nextSibling,r),e.length=r)}_$AR(t=this._$AA.nextSibling,e){for(this._$AP?.(!1,!0,e);t&&t!==this._$AB;){const e=t.nextSibling;t.remove(),t=e}}setConnected(t){void 0===this._$AM&&(this._$Cv=t,this._$AP?.(t))}}class st{get tagName(){return this.element.tagName}get _$AU(){return this._$AM._$AU}constructor(t,e,i,r,o){this.type=1,this._$AH=Y,this._$AN=void 0,this.element=t,this.name=e,this._$AM=r,this.options=o,i.length>2||""!==i[0]||""!==i[1]?(this._$AH=Array(i.length-1).fill(new String),this.strings=i):this._$AH=Y}_$AI(t,e=this,i,r){const o=this.strings;let s=!1;if(void 0===o)t=it(this,t,e,0),s=!N(t)||t!==this._$AH&&t!==G,s&&(this._$AH=t);else{const r=t;let a,n;for(t=o[0],a=0;a<o.length-1;a++)n=it(this,r[i+a],e,a),n===G&&(n=this._$AH[a]),s||=!N(n)||n!==this._$AH[a],n===Y?t=Y:t!==Y&&(t+=(n??"")+o[a+1]),this._$AH[a]=n}s&&!r&&this.j(t)}j(t){t===Y?this.element.removeAttribute(this.name):this.element.setAttribute(this.name,t??"")}}class at extends st{constructor(){super(...arguments),this.type=3}j(t){this.element[this.name]=t===Y?void 0:t}}class nt extends st{constructor(){super(...arguments),this.type=4}j(t){this.element.toggleAttribute(this.name,!!t&&t!==Y)}}class ct extends st{constructor(t,e,i,r,o){super(t,e,i,r,o),this.type=5}_$AI(t,e=this){if((t=it(this,t,e,0)??Y)===G)return;const i=this._$AH,r=t===Y&&i!==Y||t.capture!==i.capture||t.once!==i.once||t.passive!==i.passive,o=t!==Y&&(i===Y||r);r&&this.element.removeEventListener(this.name,this,i),o&&this.element.addEventListener(this.name,this,t),this._$AH=t}handleEvent(t){"function"==typeof this._$AH?this._$AH.call(this.options?.host??this.element,t):this._$AH.handleEvent(t)}}class lt{constructor(t,e,i){this.element=t,this.type=6,this._$AN=void 0,this._$AM=e,this.options=i}get _$AU(){return this._$AM._$AU}_$AI(t){it(this,t)}}const dt=E.litHtmlPolyfillSupport;dt?.(et,ot),(E.litHtmlVersions??=[]).push("3.2.1");class ht extends A{constructor(){super(...arguments),this.renderOptions={host:this},this._$Do=void 0}createRenderRoot(){const t=super.createRenderRoot();return this.renderOptions.renderBefore??=t.firstChild,t}update(t){const e=this.render();this.hasUpdated||(this.renderOptions.isConnected=this.isConnected),super.update(t),this._$Do=((t,e,i)=>{const r=i?.renderBefore??e;let o=r._$litPart$;if(void 0===o){const t=i?.renderBefore??null;r._$litPart$=o=new ot(e.insertBefore(I(),t),t,void 0,i??{})}return o._$AI(t),o})(e,this.renderRoot,this.renderOptions)}connectedCallback(){super.connectedCallback(),this._$Do?.setConnected(!0)}disconnectedCallback(){super.disconnectedCallback(),this._$Do?.setConnected(!1)}render(){return G}}ht._$litElement$=!0,ht.finalized=!0,globalThis.litElementHydrateSupport?.({LitElement:ht});const pt=globalThis.litElementPolyfillSupport;pt?.({LitElement:ht});(globalThis.litElementVersions??=[]).push("4.1.1");const bt=((t,...e)=>{const i=1===t.length?t[0]:e.reduce(((e,i,r)=>e+(t=>{if(!0===t._$cssResult$)return t.cssText;if("number"==typeof t)return t;throw Error("Value passed to 'css' function must be a 'css' function result: "+t+". Use 'unsafeCSS' to pass non-literal values, but take care to ensure page security.")})(i)+t[r+1]),t[0]);return new l(i,t,n)})`
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -700,6 +700,56 @@ ha-card {
   --b3: 21.1484% 0.01165 254.087939;
   --bc: 74.6477% 0.0216 264.435964;
 }
+  .avatar {
+  position: relative;
+  display: inline-flex;
+}
+  .avatar > div {
+  display: block;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+}
+  .avatar img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+  .avatar.placeholder > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+  .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  transition-duration: 200ms;
+  height: 1.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  width: fit-content;
+  padding-left: 0.563rem;
+  padding-right: 0.563rem;
+  border-radius: var(--rounded-badge, 1.9rem);
+  border-width: 1px;
+  --tw-border-opacity: 1;
+  border-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity)));
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+  --tw-text-opacity: 1;
+  color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
+}
+  @media (hover:hover) {
+
+  .table tr.hover:hover,
+  .table tr.hover:nth-child(even):hover {
+    --tw-bg-opacity: 1;
+    background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity)));
+  }
+}
   .card {
   position: relative;
   display: flex;
@@ -741,6 +791,58 @@ ha-card {
   z-index: 20;
   --tw-text-opacity: 1;
   color: var(--fallback-nc,oklch(var(--nc)/var(--tw-text-opacity)));
+}
+  .mask {
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+  :where(.menu li) .badge {
+  justify-self: end;
+}
+  .table {
+  position: relative;
+  width: 100%;
+  border-radius: var(--rounded-box, 1rem);
+  text-align: left;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+  .table :where(.table-pin-rows thead tr) {
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+}
+  .table :where(.table-pin-rows tfoot tr) {
+  position: sticky;
+  bottom: 0px;
+  z-index: 1;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+}
+  .table :where(.table-pin-cols tr th) {
+  position: sticky;
+  left: 0px;
+  right: 0px;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-bg-opacity)));
+}
+  .avatar-group :where(.avatar) {
+  overflow: hidden;
+  border-radius: 9999px;
+  border-width: 4px;
+  --tw-border-opacity: 1;
+  border-color: var(--fallback-b1,oklch(var(--b1)/var(--tw-border-opacity)));
+}
+  .badge-ghost {
+  --tw-border-opacity: 1;
+  border-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity)));
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity)));
+  --tw-text-opacity: 1;
+  color: var(--fallback-bc,oklch(var(--bc)/var(--tw-text-opacity)));
 }
   @keyframes button-pop {
 
@@ -801,6 +903,9 @@ ha-card {
   100% {
     background-position-y: 0;
   }
+}
+  .mask-squircle {
+  mask-image: url("data:image/svg+xml,%3csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M100 0C20 0 0 20 0 100s20 100 100 100 100-20 100-100S180 0 100 0Z'/%3e%3c/svg%3e");
 }
   @keyframes modal-pop {
 
@@ -879,6 +984,39 @@ ha-card {
     background-position: -50%;
   }
 }
+  .table:where([dir="rtl"], [dir="rtl"] *) {
+  text-align: right;
+}
+  .table :where(th, td) {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  vertical-align: middle;
+}
+  .table tr.active,
+  .table tr.active:nth-child(even),
+  .table-zebra tbody tr:nth-child(even) {
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-bg-opacity)));
+}
+  .table :where(thead tr, tbody tr:not(:last-child), tbody tr:first-child:last-child) {
+  border-bottom-width: 1px;
+  --tw-border-opacity: 1;
+  border-bottom-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity)));
+}
+  .table :where(thead, tfoot) {
+  white-space: nowrap;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 700;
+  color: var(--fallback-bc,oklch(var(--bc)/0.6));
+}
+  .table :where(tfoot) {
+  border-top-width: 1px;
+  --tw-border-opacity: 1;
+  border-top-color: var(--fallback-b2,oklch(var(--b2)/var(--tw-border-opacity)));
+}
   @keyframes toast-pop {
 
   0% {
@@ -891,17 +1029,65 @@ ha-card {
     opacity: 1;
   }
 }
+  .badge-sm {
+  height: 1rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  padding-left: 0.438rem;
+  padding-right: 0.438rem;
+}
+  .avatar.online:before {
+  content: "";
+  position: absolute;
+  z-index: 10;
+  display: block;
+  border-radius: 9999px;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-su,oklch(var(--su)/var(--tw-bg-opacity)));
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: var(--fallback-b1,oklch(var(--b1)/1));
+  width: 15%;
+  height: 15%;
+  top: 7%;
+  right: 7%;
+}
+  .avatar.offline:before {
+  content: "";
+  position: absolute;
+  z-index: 10;
+  display: block;
+  border-radius: 9999px;
+  --tw-bg-opacity: 1;
+  background-color: var(--fallback-b3,oklch(var(--b3)/var(--tw-bg-opacity)));
+  outline-style: solid;
+  outline-width: 2px;
+  outline-color: var(--fallback-b1,oklch(var(--b1)/1));
+  width: 15%;
+  height: 15%;
+  top: 7%;
+  right: 7%;
+}
   .static {
   position: static;
 }
   .flex {
   display: flex;
 }
+  .table {
+  display: table;
+}
+  .h-12 {
+  height: 3rem;
+}
   .h-32 {
   height: 8rem;
 }
   .h-4 {
   height: 1rem;
+}
+  .w-12 {
+  width: 3rem;
 }
   .w-28 {
   width: 7rem;
@@ -915,17 +1101,78 @@ ha-card {
   .flex-col {
   flex-direction: column;
 }
+  .items-center {
+  align-items: center;
+}
+  .gap-3 {
+  gap: 0.75rem;
+}
   .gap-4 {
   gap: 1rem;
 }
-`,mt=t=>{let e=[];function s(s,i){t=i?s:Object.assign(Object.assign({},t),s);let r=e;for(let e=0;e<r.length;e++)r[e](t)}return{get state(){return t},action(e){function i(t){s(t,!1)}return function(){let s=[t];for(let t=0;t<arguments.length;t++)s.push(arguments[t]);let r=e.apply(this,s);if(null!=r)return r instanceof Promise?r.then(i):i(r)}},setState:s,clearState(){t=void 0},subscribe:t=>(e.push(t),()=>{!function(t){let s=[];for(let i=0;i<e.length;i++)e[i]===t?t=null:s.push(e[i]);e=s}(t)})}},wt=(t,e,s,i,r={unsubGrace:!0})=>{if(t[e])return t[e];let o,n,a=0,c=mt();const l=()=>{if(!s)throw new Error("Collection does not support refresh");return s(t).then((t=>c.setState(t,!0)))},d=()=>l().catch((e=>{if(t.connected)throw e})),h=()=>{n=void 0,o&&o.then((t=>{t()})),c.clearState(),t.removeEventListener("ready",l),t.removeEventListener("disconnected",p)},p=()=>{n&&(clearTimeout(n),h())};return t[e]={get state(){return c.state},refresh:l,subscribe(e){a++,1===a&&(()=>{if(void 0!==n)return clearTimeout(n),void(n=void 0);i&&(o=i(t,c)),s&&(t.addEventListener("ready",d),d()),t.addEventListener("disconnected",p)})();const l=c.subscribe(e);return void 0!==c.state&&setTimeout((()=>e(c.state)),0),()=>{l(),a--,a||(r.unsubGrace?n=setTimeout(h,5e3):h())}}},t[e]};function yt(t,e){if(void 0===t)return null;const{domain:s,service:i}=e.data,r=t[s];if(!r||!(i in r))return null;const o={};return Object.keys(r).forEach((t=>{t!==i&&(o[t]=r[t])})),{[s]:o}}const vt=((t,e,s=!1)=>{let i;return function(...r){const o=this,n=s&&!i;clearTimeout(i),i=setTimeout((()=>{i=void 0,s||t.apply(o,r)}),e),n&&t.apply(o,r)}})(((t,e)=>$t(t).then((t=>e.setState(t,!0)))),5e3),$t=t=>t.sendMessagePromise({type:"get_services"}),_t=(t,e)=>Promise.all([t.subscribeEvents((s=>function(t,e,s){var i;const r=e.state;if(void 0===r)return;const{domain:o,service:n}=s.data;if(!(null===(i=r.domain)||void 0===i?void 0:i.service)){const t=Object.assign(Object.assign({},r[o]),{[n]:{description:"",fields:{}}});e.setState({[o]:t})}vt(t,e)}(t,e,s)),"service_registered"),t.subscribeEvents(e.action(yt),"service_removed")]).then((t=>()=>t.forEach((t=>t())))),kt=t=>wt(t,"_srv",$t,_t);class St{static getTemplate(){return J`
-            <div class="flex w-52 flex-col gap-4">
-                <div class="skeleton h-32 w-full"></div>
-                <div class="skeleton h-4 w-28"></div>
-                <div class="skeleton h-4 w-full"></div>
-                <div class="skeleton h-4 w-full"></div>
-            </div>`}}var At=function(t,e,s,i){var r,o=arguments.length,n=o<3?e:null===i?i=Object.getOwnPropertyDescriptor(e,s):i;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)n=Reflect.decorate(t,e,s,i);else for(var a=t.length-1;a>=0;a--)(r=t[a])&&(n=(o<3?r(n):o>3?r(e,s,n):r(e,s))||n);return o>3&&n&&Object.defineProperty(e,s,n),n};console.info("Spotcast spotify card with zustand, lit and tailwind");let xt=class extends ht{static{this.styles=gt}constructor(){super(),this.retrieveState=r.retrieveState,this.debouncedRetrieveAndSetDevices=function(t,e){let s;return(...i)=>{s&&clearTimeout(s),s=window.setTimeout((()=>t(...i)),e)}}((()=>{console.log("Spotcast spotify card debouncedRetrieveAndSetDevices"),console.log("this.retrieveState",this.retrieveState),this.retrieveState!=e.RETRIEVING&&r.setRetrieveState(e.START)}),5e3),console.log("Spotcast spotify card constructor"),s.subscribe((t=>{this.retrieveState=t.retrieveState}))}set hass(t){r.setHass(t),this.debouncedRetrieveAndSetDevices()}setConfig(t){r.setConfig(t),console.log("this.config",t)}connectedCallback(){super.connectedCallback()}isSpotcastInstalled(){return!!this.hass?.connection&&void 0!==kt(this.hass.connection).state.spotcast}render(){return J`
+  .overflow-x-auto {
+  overflow-x: auto;
+}
+  .text-sm {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+  .font-bold {
+  font-weight: 700;
+}
+  .opacity-50 {
+  opacity: 0.5;
+}
+`,ut=t=>{let e=[];function i(i,r){t=r?i:Object.assign(Object.assign({},t),i);let o=e;for(let e=0;e<o.length;e++)o[e](t)}return{get state(){return t},action(e){function r(t){i(t,!1)}return function(){let i=[t];for(let t=0;t<arguments.length;t++)i.push(arguments[t]);let o=e.apply(this,i);if(null!=o)return o instanceof Promise?o.then(r):r(o)}},setState:i,clearState(){t=void 0},subscribe:t=>(e.push(t),()=>{!function(t){let i=[];for(let r=0;r<e.length;r++)e[r]===t?t=null:i.push(e[r]);e=i}(t)})}},ft=(t,e,i,r,o={unsubGrace:!0})=>{if(t[e])return t[e];let s,a,n=0,c=ut();const l=()=>{if(!i)throw new Error("Collection does not support refresh");return i(t).then((t=>c.setState(t,!0)))},d=()=>l().catch((e=>{if(t.connected)throw e})),h=()=>{a=void 0,s&&s.then((t=>{t()})),c.clearState(),t.removeEventListener("ready",l),t.removeEventListener("disconnected",p)},p=()=>{a&&(clearTimeout(a),h())};return t[e]={get state(){return c.state},refresh:l,subscribe(e){n++,1===n&&(()=>{if(void 0!==a)return clearTimeout(a),void(a=void 0);r&&(s=r(t,c)),i&&(t.addEventListener("ready",d),d()),t.addEventListener("disconnected",p)})();const l=c.subscribe(e);return void 0!==c.state&&setTimeout((()=>e(c.state)),0),()=>{l(),n--,n||(o.unsubGrace?a=setTimeout(h,5e3):h())}}},t[e]};function gt(t,e){if(void 0===t)return null;const{domain:i,service:r}=e.data,o=t[i];if(!o||!(r in o))return null;const s={};return Object.keys(o).forEach((t=>{t!==r&&(s[t]=o[t])})),{[i]:s}}const mt=((t,e,i=!1)=>{let r;return function(...o){const s=this,a=i&&!r;clearTimeout(r),r=setTimeout((()=>{r=void 0,i||t.apply(s,o)}),e),a&&t.apply(s,o)}})(((t,e)=>wt(t).then((t=>e.setState(t,!0)))),5e3),wt=t=>t.sendMessagePromise({type:"get_services"}),vt=(t,e)=>Promise.all([t.subscribeEvents((i=>function(t,e,i){var r;const o=e.state;if(void 0===o)return;const{domain:s,service:a}=i.data;if(!(null===(r=o.domain)||void 0===r?void 0:r.service)){const t=Object.assign(Object.assign({},o[s]),{[a]:{description:"",fields:{}}});e.setState({[s]:t})}mt(t,e)}(t,e,i)),"service_registered"),t.subscribeEvents(e.action(gt),"service_removed")]).then((t=>()=>t.forEach((t=>t())))),yt=t=>ft(t,"_srv",wt,vt);class kt{static getTemplate(){return Z`
+            <div class="overflow-x-auto">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Title</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th>
+                            1
+                        </th>
+                        <td>
+                            <div class="flex items-center gap-3">
+                                <div class="avatar">
+                                    <div class="mask mask-squircle h-12 w-12">
+                                        <img
+                                        src="https://img.daisyui.com/images/profile/demo/2@94.webp"
+                                        alt="Avatar Tailwind CSS Component" />
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="font-bold">Hart Hagerty</div>
+                                    <div class="text-sm opacity-50">United States</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            Zemlak, Daniel and Leannon
+                            <br />
+                            <span class="badge badge-ghost badge-sm">Desktop Support Technician</span>
+                        </td>
+                    </tr>
+
+                    <!-- foot -->
+                    <tfoot>
+                    <tr>
+                        <th></th>
+                        <th>Name</th>
+                        <th>Job</th>
+                        <th>Favorite Color</th>
+                        <th></th>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>`}}var $t=function(t,e,i,r){var o,s=arguments.length,a=s<3?e:null===r?r=Object.getOwnPropertyDescriptor(e,i):r;if("object"==typeof Reflect&&"function"==typeof Reflect.decorate)a=Reflect.decorate(t,e,i,r);else for(var n=t.length-1;n>=0;n--)(o=t[n])&&(a=(s<3?o(a):s>3?o(e,i,a):o(e,i))||a);return s>3&&a&&Object.defineProperty(e,i,a),a};console.info("Spotcast spotify card with zustand, lit and tailwind, tracks endpoint");let _t=class extends ht{static{this.styles=bt}constructor(){super(),this.retrieveState=o.retrieveState,i.subscribe((t=>{this.retrieveState=t.retrieveState}))}set hass(t){o.setHass(t)}setConfig(t){o.setConfig(t)}connectedCallback(){super.connectedCallback()}isSpotcastInstalled(){return!!this.hass?.connection&&void 0!==yt(this.hass.connection).state.spotcast}render(){return Z`
       <ha-card header="Spotcast spotify card">
-        <div class="card-content">${St.getTemplate()}</div>
+        <div class="card-content">${kt.getTemplate()}</div>
       </ha-card>
-    `}static getConfigElement(){return document.createElement("spotcast-spotify-card-editor")}static getStubConfig(){return{header:"Test"}}};At([bt()],xt.prototype,"_devices",void 0),At([bt()],xt.prototype,"_player",void 0),At([bt()],xt.prototype,"_chromecasts",void 0),At([bt()],xt.prototype,"_categories",void 0),At([bt()],xt.prototype,"_playlists",void 0),At([bt()],xt.prototype,"_views",void 0),At([bt()],xt.prototype,"_search",void 0),xt=At([(t=>(e,s)=>{void 0!==s?s.addInitializer((()=>{customElements.define(t,e)})):customElements.define(t,e)})("spotcast-spotify-card")],xt),customElements.get("spotcast-spotify-card")||customElements.define("spotcast-spotify-card",xt),new class{constructor(){console.log("spotcastwebsocket constructor"),s.subscribe((async t=>{if(t.hass&&(this._hass=t.hass),console.log("state.retrieveState",t.retrieveState),t.retrieveState===e.START&&t.hass){r.setRetrieveState(e.RETRIEVING);await this.fetchDevices(),await this.fetchPlayer(),await this.fetchChromecasts();var s=await this.fetchCategories();await this.fetchPlaylists("mikeve97",s.categories[0].name),await this.fetchView(),await this.fetchSearch("mikeve97","This is adele","playlist");r.setRetrieveState(e.FINISHED)}}))}async _callWebSocket(t,e={}){const s={type:t,...e};console.log(`Calling method ${t} with payload ${JSON.stringify(s)}`);try{return await this._hass.callWS(s)}catch(e){throw new Error(`Failed to fetch ${t} (payload: ${JSON.stringify(s)}): ${JSON.stringify(e)}`)}}async fetchDevices(t){const e=await this._callWebSocket("spotcast/devices",{account:t});return console.log("Devices fetched:",e),e}async fetchPlayer(t){const e=await this._callWebSocket("spotcast/player",{account:t});return console.log("Current player fetched:",e),e}async fetchChromecasts(){const t=await this._callWebSocket("spotcast/castdevices");return console.log("Chromecast devices fetched:",t),t}async fetchCategories(t){const e=await this._callWebSocket("spotcast/categories",{account:t});return console.log("Categories fetched:",e),e}async fetchPlaylists(t,e){const s=await this._callWebSocket("spotcast/playlists",{account:t,category:e});return console.log("Playlists fetched:",s),s}async fetchView(t,e="recently-played"){const s=await this._callWebSocket("spotcast/view",{account:t,url:e,limit:20});return console.log("View fetched:",s),s}async fetchSearch(t,e="",s="playlist"){const i=await this._callWebSocket("spotcast/search",{account:t,query:e,searchType:s});return console.log("Search results fetched:",i),i}},window.customCards=window.customCards||[],window.customCards.push({type:"spotcast-spotify-card",name:"Spotcast spotify card",description:"Spotify card for the spotcast component"})})();
+    `}static getConfigElement(){return document.createElement("spotcast-spotify-card-editor")}static getStubConfig(){return{header:"Test"}}};_t=$t([(t=>(e,i)=>{void 0!==i?i.addInitializer((()=>{customElements.define(t,e)})):customElements.define(t,e)})("spotcast-spotify-card")],_t);customElements.get("spotcast-spotify-card")||customElements.define("spotcast-spotify-card",_t),new class{constructor(){console.log("spotcastwebsocket constructor"),i.subscribe((async t=>{if(t.hass&&(this._hass=t.hass),console.log("state.retrieveState",t.retrieveState),t.retrieveState===e.INITIAL&&t.hass&&t.config){o.setRetrieveState(e.RETRIEVING);await this.fetchDevices(),await this.fetchPlayer(),await this.fetchChromecasts();var i=await this.fetchCategories(),r=(await this.fetchPlaylists("mikeve97",i.categories[0].name),await this.fetchView(),await this.fetchSearch("mikeve97","This is adele","playlist"),await this.fetchTracks("mikeve97","37i9dQZF1E8KQMxdQmr5oL"));await this.fetchLikedMedia();console.log(r),o.setRetrieveState(e.FINISHED)}}))}async _callWebSocket(t,e={}){const i={type:t,...e};console.log(`Calling method ${t} with payload ${JSON.stringify(i)}`);try{return await this._hass.callWS(i)}catch(e){throw new Error(`Failed to fetch ${t} (payload: ${JSON.stringify(i)}): ${JSON.stringify(e)}`)}}async fetchDevices(t){const e=await this._callWebSocket("spotcast/devices",{account:t});return console.log("Devices fetched:",e),e}async fetchPlayer(t){const e=await this._callWebSocket("spotcast/player",{account:t});return console.log("Current player fetched:",e),e}async fetchChromecasts(){const t=await this._callWebSocket("spotcast/castdevices");return console.log("Chromecast devices fetched:",t),t}async fetchCategories(t){const e=await this._callWebSocket("spotcast/categories",{account:t});return console.log("Categories fetched:",e),e}async fetchPlaylists(t,e){const i=await this._callWebSocket("spotcast/playlists",{account:t,category:e});return console.log("Playlists fetched:",i),i}async fetchView(t,e="recently-played"){const i=await this._callWebSocket("spotcast/view",{account:t,url:e,limit:20});return console.log("View fetched:",i),i}async fetchSearch(t,e="",i="playlist"){const r=await this._callWebSocket("spotcast/search",{account:t,query:e,searchType:i});return console.log("Search results fetched:",r),r}async fetchTracks(t,e=""){const i=await this._callWebSocket("spotcast/tracks",{account:t,playlistId:e});return console.log("tracks fetched:",i),i}async fetchLikedMedia(t){const e=await this._callWebSocket("spotcast/liked_media",{account:t});return console.log("tracks fetched:",e),e}},new class{constructor(){console.log("spotcastwebsocket constructor"),i.subscribe((async t=>{t.hass&&(this._hass=t.hass),t.retrieveState===e.INITIAL&&t.hass&&t.config&&await this.likeMedia(["spotify:track:716qIdh6lLnhoYvvZXFYlJ"])}))}async likeMedia(t,e){console.log("liking media:",t),await this._hass.callService("spotcast","like_media",{account:e,spotify_uris:t})}},window.customCards=window.customCards||[],window.customCards.push({type:"spotcast-spotify-card",name:"Spotcast spotify card",description:"Spotify card for the spotcast component"})})();

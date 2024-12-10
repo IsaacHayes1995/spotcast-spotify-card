@@ -1,6 +1,6 @@
 import { html } from "lit";
 
-export class Skeleton {
+export class SkeletonView {
     
     public static getTemplate() {
         return html`
