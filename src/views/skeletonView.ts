@@ -1,8 +1,9 @@
 import { html } from "lit";
+import { BaseView } from "./baseView";
 
-export class SkeletonView {
+export class SkeletonView extends BaseView {
     
-    public static getTemplate() {
+    public renderTemplate() {
         return html`
             <div class="flex w-52 flex-col gap-4">
                 <div class="skeleton h-32 w-full"></div>

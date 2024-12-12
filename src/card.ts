@@ -1,24 +1,18 @@
 import { html, LitElement } from "lit";
-
 import { customElement } from 'lit/decorators/custom-element.js';
-
 import { styles } from "./card.styles";
-
-
 import { servicesColl } from "home-assistant-js-websocket";
 import Config from "./models/config";
 import { debounce } from "./helpers/helpers";
 import { HomeAssistant } from "custom-card-helpers";
 import { HomeAssistantStoreInitialState, UseHomeAssistantStore } from "./store";
-import { PlaylistView } from "./components/playlistView";
-import { HeaderView } from "./components/HeaderView";
-import { CurrentlyPlayingView } from "./components/CurrentlyPlayingView";
 
-console.info("Spotcast spotify card UI fase ");
+console.info("Spotcast spotify card UI fase v0.0.3");
 @customElement('spotcast-spotify-card')
 export class SpotcastSpotifyCard extends LitElement {
-  // declarative part
-  static styles = styles;
+  static get styles() {
+    return [styles]
+  }
 
   retrieveState = HomeAssistantStoreInitialState.retrieveState;
 
@@ -60,9 +54,9 @@ export class SpotcastSpotifyCard extends LitElement {
     return html`
       <ha-card>
         <div class="card-content">
-          ${HeaderView.getTemplate()}
-          ${PlaylistView.getTemplate()}
-          ${CurrentlyPlayingView.getTemplate()}
+          <header-view></header-view>
+          <playlist-view></playlist-view>
+          <currently-playing-view></currently-playing-view>
         </div>
       </ha-card>
     `;

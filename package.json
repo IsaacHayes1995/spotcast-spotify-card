@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
+    "colorthief": "^2.6.0",
     "custom-card-helpers": "^1.9.0",
     "home-assistant-js-websocket": "^9.4.0",
     "lit": "^3.2.1",
