@@ -6,6 +6,7 @@ import { PlaylistsResponse } from "../models/spotcast/playlist";
 import { SearchResponse } from "../models/spotcast/search";
 import { ViewResponse } from "../models/spotcast/view";
 import { HomeAssistant } from "custom-card-helpers";
+import { AccountResponse } from "models/spotcast/account";
 
 /**
  * Service to handle WebSocket requests for Spotcast integration.
@@ -149,7 +150,7 @@ export class SpotcastWebsocketService {
    * Gets the available accounts
    * @returns A promise resolving the accounts.
    */
-  async fetchAccounts(): Promise<any> {
+  async fetchAccounts(): Promise<AccountResponse> {
     const accounts = await this._callWebSocket<any>('spotcast/accounts');
     UseHomeAssistantStore.setState({accounts: accounts.accounts});
     
