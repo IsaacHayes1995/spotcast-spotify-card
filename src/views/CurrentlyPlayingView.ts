@@ -1,48 +1,43 @@
 import { html } from "lit";
 import { state } from 'lit/decorators.js';
-import ColorThief from "colorthief";
+
 import { BaseView } from "./baseView";
+import { PlaylistItem } from "../models/spotcast/PlaylistItem";
+import { UseHomeAssistantStore } from "../store";
+import { areObjectsEqual, getBackgroundGradient, removeHtmlTags, truncateText } from "../helpers/helpers";
 
 export class CurrentlyPlayingView extends BaseView {
-  @state() private backgroundColor: string = "#1f2937"; // Default background color
+  @state() private gradient: string = "linear-gradient(45deg, #1f2937, #374151)";
+  activeMedia: PlaylistItem = null;
 
   constructor() {
     super();
+    UseHomeAssistantStore.subscribe(async (state, prevState) => {
+      if(state.activeMedia?.item !== null && areObjectsEqual(state.activeMedia, prevState.activeMedia ) ) return;
+
+      this.activeMedia = state.activeMedia.item;
+      this.gradient = await getBackgroundGradient(this.activeMedia.icon);
+    });
   }
 
   connectedCallback(): void {
     super.connectedCallback();
-    this.setBackgroundColor();
-  }
-  async setBackgroundColor(): Promise<void> {
-    console.log("setBackgroundColor");
-    const colorThief = new ColorThief()
-
-    const img = new Image();
-    img.crossOrigin = "Anonymous";
-    img.src = "https://img.daisyui.com/images/profile/demo/2@94.webp";
-
-    img.onload = () => {
-      const [r, g, b] = colorThief.getColor(img);
-      const hexColor = `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1)}`;
-      this.backgroundColor = hexColor; // Update background color
-    };
   }
 
   renderTemplate() {
     return html`
-      <div class="card max-h-[60px] p-3 rounded-lg" style="background-color: ${this.backgroundColor}">
+      <div class="card max-h-[60px] p-3 rounded-lg" style="background: ${this.gradient}">
         <div class="flex items-center justify-between gap-3">
           <!-- Avatar and Text Section -->
           <div class="flex items-center gap-3">
             <div class="avatar">
               <div class="mask mask-squircle h-12 w-12">
-                <img src="https://img.daisyui.com/images/profile/demo/2@94.webp" alt="Avatar" />
+                <img src="${this.activeMedia?.icon}" alt="Avatar" />
               </div>
             </div>
             <div>
-              <div class="font-bold text-white">Hart Hagerty</div>
-              <div class="text-sm text-gray-400">United States</div>
+              <div class="font-bold text-white">${truncateText(removeHtmlTags(this.activeMedia?.name), 40)}</div>
+              <div class="text-sm text-gray-400">${truncateText(removeHtmlTags(this.activeMedia?.description), 40)}</div>
             </div>
           </div>
 

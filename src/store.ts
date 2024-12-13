@@ -1,5 +1,7 @@
 import { createStore } from 'zustand/vanilla'
 import { HomeAssistant } from 'custom-card-helpers';
+import { ViewResponse } from './models/spotcast/view';
+import { PlaylistItem } from 'models/spotcast/PlaylistItem';
 
 export enum RetrieveState{
     INITIAL = "INITIAL",
@@ -11,26 +13,42 @@ export enum RetrieveState{
 
 export interface IHomeAssistantState { 
     hass: HomeAssistant;
-    setHass: (hass: HomeAssistant) => void;
-
+    prevState: IHomeAssistantState;
     config: any;
-    setConfig: (config: any) => void;
-
+    accounts: any[];
     retrieveState: RetrieveState;
-    setRetrieveState: (retrieveState: RetrieveState) => void;
+    view: ViewResponse;
+    activeMedia: {item: PlaylistItem, start: boolean};
+    username: string;
 }
   
 const UseHomeAssistantStore = createStore<IHomeAssistantState>((set) => ({
     hass: null,
-    setHass: (hass) => set({ hass }),
-
+    prevState: null,
     config: null,
-    setConfig: (config) => set({ config }),
-
     retrieveState: RetrieveState.INITIAL,
-    setRetrieveState: (retrieveState) => set({ retrieveState }),
+    view: null,
+    activeMedia: null,
+    startPlayback: false,
+    username: null,
+    accounts: null,
 }));
 
 const HomeAssistantStoreInitialState = UseHomeAssistantStore.getInitialState();
 export { HomeAssistantStoreInitialState, UseHomeAssistantStore };
-  
+
+
+export interface IViewState { 
+    playlistViewReady: boolean;
+    headerViewReady: boolean;
+    currentlyPlayingViewReady: boolean;
+}
+
+const UseViewStore = createStore<IViewState>((set) => ({
+    playlistViewReady: false,
+    headerViewReady: false,
+    currentlyPlayingViewReady: false
+}))
+
+const ViewStoreInitialState = UseViewStore.getInitialState();
+export { ViewStoreInitialState, UseViewStore };

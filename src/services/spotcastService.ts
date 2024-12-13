@@ -1,5 +1,7 @@
-import { HomeAssistantStoreInitialState, RetrieveState, UseHomeAssistantStore } from "../store";
+import { PlaylistItem } from "models/spotcast/PlaylistItem";
+import { UseHomeAssistantStore } from "../store";
 import { HomeAssistant } from "custom-card-helpers";
+import { getActiveSpotcastPlayer } from "../helpers/helpers";
 
 /**
  * Service to make service calls to Spotcast
@@ -7,17 +9,8 @@ import { HomeAssistant } from "custom-card-helpers";
 export class SpotcastService {
   _hass: HomeAssistant;
 
-  constructor() {
-    console.log("spotcastwebsocket constructor");
-    UseHomeAssistantStore.subscribe(async (state) => {
-      if (state.hass) {
-        this._hass = state.hass;
-      }
-
-      if (state.retrieveState === RetrieveState.INITIAL && state.hass && state.config) { 
-        await this.likeMedia(["spotify:track:716qIdh6lLnhoYvvZXFYlJ"])
-      }
-    })
+  constructor(hass: HomeAssistant) {
+    this._hass = hass;
   }
 
   /**
@@ -27,10 +20,35 @@ export class SpotcastService {
    * @returns A promise resolving to the search results.
    */
   async likeMedia(spotify_uris: string[], account?: string) {
-    console.log("liking media:", spotify_uris);
     await this._hass.callService('spotcast', 'like_media', {
       account,
       spotify_uris
     });
   }
+
+  /**
+   * Plays media on a specified media player.
+   * @param spotify_uri The URI of the Spotify media (album, track, or playlist).
+   * @param media_player The Home Assistant entity ID of the media player.
+   * @param account Optional Spotify account identifier.
+   * @param extras Optional extras to pass with the data payload.
+   */
+  async playMedia(
+    activeMedia: PlaylistItem,
+    mediaPlayer: string,
+    account?: string,
+    extras?: Record<string, any> // Flexible for additional extras
+  ) {
+    
+    var player = getActiveSpotcastPlayer();
+    const serviceData: Record<string, any> = {
+      spotify_uri: activeMedia.uri, 
+      media_player: { entity_id: [player] },
+      account,
+      extras
+    };
+
+    await this._hass.callService('spotcast', 'play_media', serviceData);
+    // UseHomeAssistantStore.setState({activeMedia: {item: activeMedia, start: true}});
+  }  
 }

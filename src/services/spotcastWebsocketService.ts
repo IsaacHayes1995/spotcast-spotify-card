@@ -1,4 +1,4 @@
-import { HomeAssistantStoreInitialState, RetrieveState, UseHomeAssistantStore } from "../store";
+import { RetrieveState, UseHomeAssistantStore } from "../store";
 import { CategoriesResponse } from "../models/spotcast/category";
 import { ChromecastResponse, DevicesResponse } from "../models/spotcast/device";
 import { PlayerResponse } from "../models/spotcast/player";
@@ -14,28 +14,8 @@ export class SpotcastWebsocketService {
 
   _hass: HomeAssistant;
 
-  constructor() {
-    console.log("spotcastwebsocket constructor");
-    UseHomeAssistantStore.subscribe(async (state) => {
-      if (state.hass) {
-        this._hass = state.hass;
-      }
-      console.log("state.retrieveState", state.retrieveState);
-      if (state.retrieveState === RetrieveState.INITIAL && state.hass && state.config) { 
-        HomeAssistantStoreInitialState.setRetrieveState(RetrieveState.RETRIEVING);
-        var devices = await this.fetchDevices();
-        var player = await this.fetchPlayer();
-        var chromecasts = await this.fetchChromecasts();
-        var categories = await this.fetchCategories();
-        var categoryPlaylists = await this.fetchPlaylists("mikeve97", categories.categories[0].name);
-        var views = await this.fetchView();
-        var search = await this.fetchSearch("mikeve97", "This is adele", "playlist");
-        var tracks = await this.fetchTracks("mikeve97", "37i9dQZF1E8KQMxdQmr5oL");
-        var liked_tracks = await this.fetchLikedMedia();
-        console.log(tracks);
-        HomeAssistantStoreInitialState.setRetrieveState(RetrieveState.FINISHED);
-      }
-    })
+  constructor(hass: HomeAssistant) {
+    this._hass = hass;
   }
 
   /**
@@ -49,7 +29,7 @@ export class SpotcastWebsocketService {
       type,
       ...payload,
     };
-    console.log(`Calling method ${type} with payload ${JSON.stringify(message)}`);
+
     try {
       return await this._hass.callWS<T>(message);
     } catch (error: any) {
@@ -64,7 +44,7 @@ export class SpotcastWebsocketService {
    */
   async fetchDevices(account?: string): Promise<DevicesResponse> {
     const devices = await this._callWebSocket<DevicesResponse>('spotcast/devices', { account });
-    console.log("Devices fetched:", devices);
+
     return devices;
   }
 
@@ -75,7 +55,7 @@ export class SpotcastWebsocketService {
    */
   async fetchPlayer(account?: string): Promise<PlayerResponse> {
     const currentPlayer = await this._callWebSocket<PlayerResponse>('spotcast/player', { account });
-    console.log("Current player fetched:", currentPlayer);
+
     return currentPlayer;
   }
 
@@ -85,7 +65,7 @@ export class SpotcastWebsocketService {
    */
   async fetchChromecasts(): Promise<ChromecastResponse> {
     const chromecasts = await this._callWebSocket<ChromecastResponse>('spotcast/castdevices');
-    console.log("Chromecast devices fetched:", chromecasts);
+
     return chromecasts;
   }
 
@@ -96,7 +76,7 @@ export class SpotcastWebsocketService {
    */
   async fetchCategories(account?: string): Promise<CategoriesResponse> {
     const categories = await this._callWebSocket<CategoriesResponse>('spotcast/categories', { account });
-    console.log("Categories fetched:", categories);
+
     return categories;
   }
 
@@ -108,7 +88,7 @@ export class SpotcastWebsocketService {
    */
   async fetchPlaylists(account?: string, category?: string): Promise<PlaylistsResponse> {
     const playlists = await this._callWebSocket<PlaylistsResponse>('spotcast/playlists', { account, category });
-    console.log("Playlists fetched:", playlists);
+
     return playlists;
   }
 
@@ -124,7 +104,8 @@ export class SpotcastWebsocketService {
       url,
       limit: 20
     });
-    console.log("View fetched:", view);
+
+    UseHomeAssistantStore.setState({view});
     return view;
   }
 
@@ -137,7 +118,7 @@ export class SpotcastWebsocketService {
    */
   async fetchSearch(account?: string, query: string = '', searchType: string = 'playlist'): Promise<SearchResponse> {
     const searchResults = await this._callWebSocket<SearchResponse>('spotcast/search', { account, query, searchType });
-    console.log("Search results fetched:", searchResults);
+
     return searchResults;
   }
 
@@ -149,7 +130,7 @@ export class SpotcastWebsocketService {
    */
   async fetchTracks(account?: string, playlistId: string = ''): Promise<any> {
     const tracks = await this._callWebSocket<any>('spotcast/tracks', { account, playlistId });
-    console.log("tracks fetched:", tracks);
+    
     return tracks;
   }
 
@@ -159,8 +140,19 @@ export class SpotcastWebsocketService {
    * @returns A promise resolving to the search results.
    */
   async fetchLikedMedia(account?: string): Promise<any> {
-    const tracks = await this._callWebSocket<any>('spotcast/liked_media', { account });
-    console.log("tracks fetched:", tracks);
-    return tracks;
+    const likedMedia = await this._callWebSocket<any>('spotcast/liked_media', { account });
+    
+    return likedMedia;
+  }
+
+  /**
+   * Gets the available accounts
+   * @returns A promise resolving the accounts.
+   */
+  async fetchAccounts(): Promise<any> {
+    const accounts = await this._callWebSocket<any>('spotcast/accounts');
+    UseHomeAssistantStore.setState({accounts: accounts.accounts});
+    
+    return accounts;
   }
 }
