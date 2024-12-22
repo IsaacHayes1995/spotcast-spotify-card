@@ -36,7 +36,6 @@ export class CurrentlyPlayingView extends BaseView {
 
   async initialStartup() {
     this.activeTrack = UseHomeAssistantStore.getState().activeTrack;
-    console.log(this.activeTrack);
     this.artistNames = this.activeTrack.track?.artists.map(artist => artist.name).join(", ");
     var largestImage = this.activeTrack.track?.album.images.reduce(
       (prev, current) => prev.width > current.width ? prev : current, this.activeTrack?.track.album.images[0]);

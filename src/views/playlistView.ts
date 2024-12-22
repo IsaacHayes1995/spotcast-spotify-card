@@ -83,8 +83,8 @@ export class PlaylistView extends BaseView{
                                         </div>
                                     </td>
                                     <!-- <td> description </td> -->
-                                    <td>
-                                        <button @click=${() => this.changePlaybackPlaylist(playlist)} class="btn btn-ghost m-1 ${this.activePlaylist?.uri === playlist.uri ? 'text-[#1ed760]' : ''}">
+                                    <td >
+                                        <button class="btn btn-ghost mb-1 p-0 ${this.activePlaylist?.uri === playlist.uri ? 'text-[#1ed760]' : ''}" @click=${() => this.changePlaybackPlaylist(playlist)} >
                                             ${playlist.is_playing
                                                 ? html`
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-pause-circle-fill" viewBox="0 0 16 16">

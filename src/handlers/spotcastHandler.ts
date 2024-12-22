@@ -93,7 +93,7 @@ export class SpotcastHandler {
     private changeActiveMedia(newActivePlaylist: ActivePlaylist, prevActivePlaylist: ActivePlaylist) {
         if (newActivePlaylist === null ||
             !newActivePlaylist.start ||
-            areObjectsEqual(newActivePlaylist.item, prevActivePlaylist?.item)) {
+            areObjectsEqual(newActivePlaylist, prevActivePlaylist)) {
             return;
         }
 
@@ -103,7 +103,7 @@ export class SpotcastHandler {
 
     private async setActiveTrack(player?: PlayerResponse, context?: SpotcastWebsocketService) {
         if (player == null) player = await context.fetchPlayer();
-        console.log(player);
+
         UseHomeAssistantStore.setState({ activeTrack: { track: player.state.item, isPlaying: player.state.is_playing } });
     }
 }
