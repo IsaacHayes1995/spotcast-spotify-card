@@ -22,7 +22,6 @@ export class HeaderView extends BaseView {
 
     connectedCallback() {
         super.connectedCallback();
-        console.log("HeaderView connectedCallback");
         this.globalClick = this.globalClick.bind(this);
         document.addEventListener('click', this.globalClick);
     }

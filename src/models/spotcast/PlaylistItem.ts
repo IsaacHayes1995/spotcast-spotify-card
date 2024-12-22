@@ -4,4 +4,5 @@ export interface PlaylistItem {
     description: string | null;
     uri: string;
     icon?: string | null;
+    is_playing: boolean;
 }

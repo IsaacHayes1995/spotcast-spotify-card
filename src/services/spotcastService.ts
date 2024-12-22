@@ -29,26 +29,25 @@ export class SpotcastService {
   /**
    * Plays media on a specified media player.
    * @param spotify_uri The URI of the Spotify media (album, track, or playlist).
-   * @param media_player The Home Assistant entity ID of the media player.
-   * @param account Optional Spotify account identifier.
+   * @param account Optional spotify account ID (entry_id).
+   * @param media_player Optional the Home Assistant entity ID of the media player.
    * @param extras Optional extras to pass with the data payload.
    */
   async playMedia(
     activeMedia: PlaylistItem,
-    mediaPlayer: string,
     account?: string,
+    mediaPlayer?: string,
     extras?: Record<string, any> // Flexible for additional extras
   ) {
-    
+
     var player = getActiveSpotcastPlayer();
     const serviceData: Record<string, any> = {
-      spotify_uri: activeMedia.uri, 
+      spotify_uri: activeMedia.uri,
       media_player: { entity_id: [player] },
       account,
       extras
     };
 
     await this._hass.callService('spotcast', 'play_media', serviceData);
-    // UseHomeAssistantStore.setState({activeMedia: {item: activeMedia, start: true}});
-  }  
+  }
 }

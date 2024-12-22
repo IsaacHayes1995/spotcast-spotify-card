@@ -1,35 +1,39 @@
 import { createStore } from 'zustand/vanilla'
 import { HomeAssistant } from 'custom-card-helpers';
 import { ViewResponse } from './models/spotcast/view';
-import { PlaylistItem } from 'models/spotcast/PlaylistItem';
+import { ActivePlaylist } from './models/activePlaylist';
+import { AccountResponse } from './models/spotcast/account';
+import { ActiveTrack } from './models/activeTrack';
 
 export enum RetrieveState{
     INITIAL = "INITIAL",
-    START = "START",
-    FAILED = "FAILED",
     FINISHED = "FINISHED",
-    RETRIEVING = "RETRIEVING"
+    CHANGEPLAYLIST = "CHANGEPLAYLIST",
+    CHANGETRACK = "CHANGETRACK",
+    UPDATEHASS = "UPDATEHASS",
+    UPDATECONFIG = "UPDATECONFIG",
 }
 
-export interface IHomeAssistantState { 
+export interface IHomeAssistantState {
     hass: HomeAssistant;
     prevState: IHomeAssistantState;
     config: any;
-    accounts: any[];
+    accounts: AccountResponse;
     retrieveState: RetrieveState;
     view: ViewResponse;
-    activeMedia: {item: PlaylistItem, start: boolean};
+    activePlaylist: ActivePlaylist;
+    activeTrack: ActiveTrack;
     username: string;
 }
-  
+
 const UseHomeAssistantStore = createStore<IHomeAssistantState>((set) => ({
     hass: null,
     prevState: null,
     config: null,
     retrieveState: RetrieveState.INITIAL,
     view: null,
-    activeMedia: null,
-    startPlayback: false,
+    activePlaylist: null,
+    activeTrack: null,
     username: null,
     accounts: null,
 }));
@@ -38,7 +42,7 @@ const HomeAssistantStoreInitialState = UseHomeAssistantStore.getInitialState();
 export { HomeAssistantStoreInitialState, UseHomeAssistantStore };
 
 
-export interface IViewState { 
+export interface IViewState {
     playlistViewReady: boolean;
     headerViewReady: boolean;
     currentlyPlayingViewReady: boolean;

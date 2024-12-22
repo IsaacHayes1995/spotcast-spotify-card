@@ -4,13 +4,14 @@ import { styles } from "./card.styles";
 import { servicesColl } from "home-assistant-js-websocket";
 import Config from "./models/config";
 import { HomeAssistant } from "custom-card-helpers";
-import { UseHomeAssistantStore, UseViewStore, ViewStoreInitialState } from "./store";
+import { RetrieveState, UseHomeAssistantStore, UseViewStore, ViewStoreInitialState } from "./store";
 import { state } from "lit/decorators.js";
 
 console.info("Spotcast spotify card UI fase v0.0.3");
 @customElement('spotcast-spotify-card')
 export class SpotcastSpotifyCard extends LitElement {
   @state() playListViewReady: boolean = ViewStoreInitialState.playlistViewReady;
+  @state() currentlyPlayingViewReady: boolean = ViewStoreInitialState.currentlyPlayingViewReady;
 
   static get styles() {
     return [styles]
@@ -21,17 +22,18 @@ export class SpotcastSpotifyCard extends LitElement {
     super();
     UseViewStore.subscribe((state) => {
       this.playListViewReady = state.playlistViewReady
+      this.currentlyPlayingViewReady = state.currentlyPlayingViewReady
     });
   }
 
   // Updates whenever the `hass` property changes
   // This happens if anything changes state in homeassistant
   set hass(hass: HomeAssistant | undefined) {
-    UseHomeAssistantStore.setState({hass});
+    UseHomeAssistantStore.setState({hass: hass, retrieveState: RetrieveState.UPDATEHASS});
   }
 
   setConfig(config: Config) {
-    UseHomeAssistantStore.setState({config});
+    UseHomeAssistantStore.setState({config: config, retrieveState: RetrieveState.UPDATECONFIG});
   }
 
   connectedCallback(): void {
@@ -51,13 +53,19 @@ export class SpotcastSpotifyCard extends LitElement {
 
   getPlaylistView() {
     if(!this.playListViewReady) {
-        console.log("Playlist view not ready");
-        return html`<skeleton-view></skeleton-view>`
+        return html`<playlist-skeleton></playlist-skeleton>`
     }
-    
-    console.log("Playlist view is ready");
+
     return html`<playlist-view></playlist-view>`;
-}
+  }
+
+  getCurrentlyPlayingView() {
+    if(!this.currentlyPlayingViewReady) {
+        return html`<currently-playing-skeleton></currently-playing-skeleton>`
+    }
+
+    return html`<currently-playing-view></currently-playing-view>`;
+  }
 
   render() {
     return html`
@@ -65,7 +73,7 @@ export class SpotcastSpotifyCard extends LitElement {
         <div class="card-content">
           <header-view></header-view>
           ${this.getPlaylistView()}
-          <currently-playing-view></currently-playing-view>
+          ${this.getCurrentlyPlayingView()}
         </div>
       </ha-card>
     `;

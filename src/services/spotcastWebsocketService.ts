@@ -44,9 +44,7 @@ export class SpotcastWebsocketService {
    * @returns A promise resolving to an array of devices.
    */
   async fetchDevices(account?: string): Promise<DevicesResponse> {
-    const devices = await this._callWebSocket<DevicesResponse>('spotcast/devices', { account });
-
-    return devices;
+    return await this._callWebSocket<DevicesResponse>('spotcast/devices', { account });
   }
 
   /**
@@ -55,9 +53,7 @@ export class SpotcastWebsocketService {
    * @returns A promise resolving to the current player.
    */
   async fetchPlayer(account?: string): Promise<PlayerResponse> {
-    const currentPlayer = await this._callWebSocket<PlayerResponse>('spotcast/player', { account });
-
-    return currentPlayer;
+    return await this._callWebSocket<PlayerResponse>('spotcast/player', { account });
   }
 
   /**
@@ -65,9 +61,7 @@ export class SpotcastWebsocketService {
    * @returns A promise resolving to an array of Chromecast devices.
    */
   async fetchChromecasts(): Promise<ChromecastResponse> {
-    const chromecasts = await this._callWebSocket<ChromecastResponse>('spotcast/castdevices');
-
-    return chromecasts;
+    return await this._callWebSocket<ChromecastResponse>('spotcast/castdevices');
   }
 
   /**
@@ -76,9 +70,7 @@ export class SpotcastWebsocketService {
    * @returns A promise resolving to the categories.
    */
   async fetchCategories(account?: string): Promise<CategoriesResponse> {
-    const categories = await this._callWebSocket<CategoriesResponse>('spotcast/categories', { account });
-
-    return categories;
+    return await this._callWebSocket<CategoriesResponse>('spotcast/categories', { account });
   }
 
   /**
@@ -88,9 +80,7 @@ export class SpotcastWebsocketService {
    * @returns A promise resolving to the playlists.
    */
   async fetchPlaylists(account?: string, category?: string): Promise<PlaylistsResponse> {
-    const playlists = await this._callWebSocket<PlaylistsResponse>('spotcast/playlists', { account, category });
-
-    return playlists;
+    return await this._callWebSocket<PlaylistsResponse>('spotcast/playlists', { account, category });
   }
 
   /**
@@ -99,15 +89,12 @@ export class SpotcastWebsocketService {
    * @param url The URL of the view to fetch.
    * @returns A promise resolving to the view data.
    */
-  async fetchView(account?: string, url: string = 'recently-played'): Promise<ViewResponse> {
-    const view = await this._callWebSocket<ViewResponse>('spotcast/view', {
+  async fetchView(account?: string, name: string = 'recently-played'): Promise<ViewResponse> {
+    return await this._callWebSocket<ViewResponse>('spotcast/view', {
       account,
-      url,
+      name,
       limit: 20
     });
-
-    UseHomeAssistantStore.setState({view});
-    return view;
   }
 
   /**
@@ -118,21 +105,17 @@ export class SpotcastWebsocketService {
    * @returns A promise resolving to the search results.
    */
   async fetchSearch(account?: string, query: string = '', searchType: string = 'playlist'): Promise<SearchResponse> {
-    const searchResults = await this._callWebSocket<SearchResponse>('spotcast/search', { account, query, searchType });
-
-    return searchResults;
+    return await this._callWebSocket<SearchResponse>('spotcast/search', { account, query, searchType });
   }
 
   /**
-   * Searches Spotcast for a specific query.
+   * Returns the tracks of an playlist
    * @param account Optional account identifier.
    * @param url The url of the playlist
    * @returns A promise resolving to the search results.
    */
   async fetchTracks(account?: string, playlistId: string = ''): Promise<any> {
-    const tracks = await this._callWebSocket<any>('spotcast/tracks', { account, playlistId });
-    
-    return tracks;
+    return await this._callWebSocket<any>('spotcast/tracks', { account, playlistId });
   }
 
   /**
@@ -141,9 +124,7 @@ export class SpotcastWebsocketService {
    * @returns A promise resolving to the search results.
    */
   async fetchLikedMedia(account?: string): Promise<any> {
-    const likedMedia = await this._callWebSocket<any>('spotcast/liked_media', { account });
-    
-    return likedMedia;
+    return await this._callWebSocket<any>('spotcast/liked_media', { account });
   }
 
   /**
@@ -151,9 +132,6 @@ export class SpotcastWebsocketService {
    * @returns A promise resolving the accounts.
    */
   async fetchAccounts(): Promise<AccountResponse> {
-    const accounts = await this._callWebSocket<any>('spotcast/accounts');
-    UseHomeAssistantStore.setState({accounts: accounts.accounts});
-    
-    return accounts;
+    return await this._callWebSocket<AccountResponse>('spotcast/accounts');
   }
 }

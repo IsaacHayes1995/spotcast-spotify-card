@@ -1,3 +1,5 @@
+import { Track } from "./track";
+
 export interface PlayerResponse {
     account: string;
     state: PlayerState;
@@ -6,17 +8,13 @@ export interface PlayerResponse {
 interface PlayerState {
     context: {
         href: string;
-        type: string;   
+        type: string;
         uri: string;
     };
 
-    item: {
-        id: string;
-        name: string;
-        uri: string;
-        type: string;
-    };
+    item: Track;
 
     repeat: string;
     shuffle_state: boolean;
+    is_playing: boolean;
 }

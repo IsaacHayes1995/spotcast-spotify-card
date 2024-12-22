@@ -2,11 +2,12 @@ import { SpotcastSpotifyCard } from "./card";
 import { CurrentlyPlayingView } from "./views/CurrentlyPlayingView";
 import { HeaderView } from "./views/HeaderView";
 import { PlaylistView } from "./views/playlistView";
-import { SkeletonView } from "./views/skeletonView";
 import { PlayingIcon } from "./views/playingIcon";
 import { viewHandler } from "./handlers/viewHandler";
 import { SpotcastHandler } from "./handlers/spotcastHandler";
 import { ErrorHandler } from "./handlers/errorHandler";
+import { PlaylistSkeleton } from "./views/skeletons/playlistSkeleton";
+import { CurrentlyPlayingSkeleton } from "./views/skeletons/CurrentlyPlayingSkeleton";
 
 declare global {
   interface Window {
@@ -19,9 +20,10 @@ const customElementsRegistry = [
   { tag: 'header-view', class: HeaderView },
   { tag: 'playlist-view', class: PlaylistView },
   { tag: 'currently-playing-view', class: CurrentlyPlayingView },
-  { tag: 'skeleton-view', class: SkeletonView },
   { tag: 'spotcast-spotify-card', class: SpotcastSpotifyCard },
   { tag: 'playing-icon', class: PlayingIcon },
+  { tag: 'playlist-skeleton', class: PlaylistSkeleton },
+  { tag: 'currently-playing-skeleton', class: CurrentlyPlayingSkeleton },
 ];
 
 // Register custom elements dynamically

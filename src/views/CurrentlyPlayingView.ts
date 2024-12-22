@@ -5,19 +5,42 @@ import { BaseView } from "./baseView";
 import { PlaylistItem } from "../models/spotcast/PlaylistItem";
 import { UseHomeAssistantStore } from "../store";
 import { areObjectsEqual, getBackgroundGradient, removeHtmlTags, truncateText } from "../helpers/helpers";
+import { ActiveTrack } from "models/activeTrack";
 
 export class CurrentlyPlayingView extends BaseView {
   @state() private gradient: string = "linear-gradient(45deg, #1f2937, #374151)";
-  activeMedia: PlaylistItem = null;
+  imageUrl: string = "";
+  artistNames: string = "";
+  activePlaylist: PlaylistItem = null;
+  activeTrack: ActiveTrack = null;
 
   constructor() {
     super();
-    UseHomeAssistantStore.subscribe(async (state, prevState) => {
-      if(state.activeMedia?.item !== null && areObjectsEqual(state.activeMedia, prevState.activeMedia ) ) return;
+    this.initialStartup();
+    this.homeAssistantStoreSubscribe();
+  }
 
-      this.activeMedia = state.activeMedia.item;
-      this.gradient = await getBackgroundGradient(this.activeMedia.icon);
-    });
+  homeAssistantStoreSubscribe() {
+    UseHomeAssistantStore.subscribe(async (state) => {
+      const activeTrackChanged = state.activeTrack?.track !== null && !areObjectsEqual(state.activeTrack, this.activeTrack);
+      if(!activeTrackChanged) return;
+
+      this.activeTrack = state.activeTrack;
+      this.artistNames = this.activeTrack.track.artists.map(artist => artist.name).join(", ");
+      var largestImage = this.activeTrack.track.album.images.reduce(
+        (prev, current) => prev.width > current.width ? prev : current, this.activeTrack.track.album.images[0]);
+      this.imageUrl = largestImage.url;
+      this.gradient = await getBackgroundGradient(largestImage.url);
+    })
+  }
+
+  async initialStartup() {
+    this.activeTrack = UseHomeAssistantStore.getState().activeTrack;
+    this.artistNames = this.activeTrack.track.artists.map(artist => artist.name).join(", ");
+    var largestImage = this.activeTrack.track.album.images.reduce(
+      (prev, current) => prev.width > current.width ? prev : current, this.activeTrack.track.album.images[0]);
+    this.imageUrl = largestImage.url;
+    this.gradient = await getBackgroundGradient(largestImage.url);
   }
 
   connectedCallback(): void {
@@ -32,12 +55,12 @@ export class CurrentlyPlayingView extends BaseView {
           <div class="flex items-center gap-3">
             <div class="avatar">
               <div class="mask mask-squircle h-12 w-12">
-                <img src="${this.activeMedia?.icon}" alt="Avatar" />
+                <img src="${this.imageUrl}" alt="Avatar" />
               </div>
             </div>
             <div>
-              <div class="font-bold text-white">${truncateText(removeHtmlTags(this.activeMedia?.name), 40)}</div>
-              <div class="text-sm text-gray-400">${truncateText(removeHtmlTags(this.activeMedia?.description), 40)}</div>
+              <div class="font-bold text-white">${truncateText(removeHtmlTags(this.activeTrack?.track?.name), 40)}</div>
+              <div class="text-sm text-gray-400">${truncateText(removeHtmlTags(this.artistNames), 40)}</div>
             </div>
           </div>
 
@@ -61,5 +84,3 @@ export class CurrentlyPlayingView extends BaseView {
     `;
   }
 }
-
-customElements.define("currently-playing-view", CurrentlyPlayingView);

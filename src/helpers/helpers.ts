@@ -1,6 +1,7 @@
 import { HassEntity } from "home-assistant-js-websocket/dist/types";
 import ColorThief from "colorthief";
 import { UseHomeAssistantStore } from "../store";
+import { HomeAssistant } from "custom-card-helpers/dist/types";
 
 /**
  * A utility function to debounce a callback.
@@ -33,8 +34,8 @@ export function truncateText(text: string, maxLength: number = 20): string {
 }
 
 export function getActiveSpotcastPlayer(): string | undefined {
-  const account = UseHomeAssistantStore.getState().accounts
-    .find((account: { is_default: boolean }) => account.is_default)?.spotify_name;
+  const account = UseHomeAssistantStore.getState()
+    .accounts.accounts?.find((account: { is_default: boolean }) => account.is_default)?.spotify_name;
 
   const hass = UseHomeAssistantStore.getState().hass;
 
@@ -43,16 +44,22 @@ export function getActiveSpotcastPlayer(): string | undefined {
     return undefined;
   }
 
-  const activePlayer = Object.values(hass.states).filter((state: HassEntity) => {
+  const activePlayers = Object.values(hass.states).filter((state: HassEntity) => {
     return (
       state.entity_id.includes('media_player') &&
       state.entity_id.includes('spotcast') &&
-      state.entity_id.includes(account) &&
-      state.state === 'on' // Filter only devices that are currently on
+      state.entity_id.includes(account)
     );
   });
 
-  return activePlayer.length > 0 ? activePlayer[0].entity_id : undefined;
+  // Prefer players that are "on"
+  const onPlayers = activePlayers?.filter((player: HassEntity) => player.state === 'on');
+
+  if (onPlayers.length > 0) {
+    return onPlayers[0].entity_id;
+  }
+
+  return activePlayers[0].entity_id;
 }
 
 export function removeHtmlTags(text: string): string {
@@ -61,10 +68,19 @@ export function removeHtmlTags(text: string): string {
   return text.replace(/<\/?[^>]+(>|$)/g, "");
 }
 
-export function areObjectsEqual<T>(obj1: T, obj2: T): boolean {
-  console.info("checking object equality");
+export function filterHassObject(hass: HomeAssistant, objectType: string, userName: string) {
+  if (!hass || !hass.states) return [];
 
-  // If both are null or undefined, they are equal
+  return Object.values(hass.states).filter(x => {
+    return (
+      x.entity_id.includes(objectType) &&
+      x.entity_id.includes(userName)
+    );
+  });
+}
+
+export function areObjectsEqual<T>(obj1: T, obj2: T): boolean {
+   // If both are null or undefined, they are equal
   if (obj1 === obj2) return true;
 
   // If one is null/undefined but not the other, they are not equal
@@ -136,4 +152,10 @@ export async function getBackgroundGradient(imgUrl: string): Promise<string> {
       reject(new Error('Failed to load image'));
     };
   });
+}
+
+// Generic method to execute a method after a delay in seconds
+// Accepts any amount of arguments
+export function delay(seconds: number, method: (...args: any[]) => void, ...args: any[]) {
+  setTimeout(() => method(...args), seconds * 1000);
 }
