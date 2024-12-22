@@ -1,12 +1,12 @@
-import { AccountResponse } from "models/spotcast/account";
 import { ViewResponse } from "../models/spotcast/view";
 import { UseHomeAssistantStore, UseViewStore } from "../store";
+import { ActiveTrack } from "models/activeTrack";
 
 export class viewHandler {
     constructor() {
         UseHomeAssistantStore.subscribe((state) => {
             this.isPlayListViewReady(state.view);
-            this.isCurrentlyPlayingViewReady(state.accounts);
+            this.isCurrentlyPlayingViewReady(state.activeTrack);
         })
     }
 
@@ -14,7 +14,7 @@ export class viewHandler {
         UseViewStore.setState({playlistViewReady: state?.playlists?.length > 0});
     }
 
-    isCurrentlyPlayingViewReady(state: AccountResponse) {
-        UseViewStore.setState({currentlyPlayingViewReady: state?.accounts?.length > 0});
+    isCurrentlyPlayingViewReady(activeTrack: ActiveTrack) {
+        UseViewStore.setState({ currentlyPlayingViewReady: activeTrack?.track !== undefined });
     }
 }

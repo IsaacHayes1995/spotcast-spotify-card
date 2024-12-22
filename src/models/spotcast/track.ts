@@ -8,4 +8,5 @@ export interface Track {
     type: string;
     artists: Artist[];
     album: Album;
+    is_playing: boolean;
 }

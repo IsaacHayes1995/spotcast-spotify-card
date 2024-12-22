@@ -53,7 +53,7 @@ export class SpotcastSpotifyCard extends LitElement {
 
   getPlaylistView() {
     if(!this.playListViewReady) {
-        return html`<playlist-skeleton></playlist-skeleton>`
+      return html`<playlist-skeleton></playlist-skeleton>`
     }
 
     return html`<playlist-view></playlist-view>`;
@@ -61,7 +61,7 @@ export class SpotcastSpotifyCard extends LitElement {
 
   getCurrentlyPlayingView() {
     if(!this.currentlyPlayingViewReady) {
-        return html`<currently-playing-skeleton></currently-playing-skeleton>`
+      return;
     }
 
     return html`<currently-playing-view></currently-playing-view>`;

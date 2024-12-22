@@ -19,15 +19,11 @@ export class SpotcastHandler {
         UseHomeAssistantStore.subscribe(async (state, prevState) => {
             if (state.retrieveState === RetrieveState.FINISHED || !state.hass || !state.config) return;
 
-            console.log("store state: ", state);
-
             //Register services if needed, and fetch initial data if needed.
             await this.startup(state.hass);
 
             if(state.retrieveState === RetrieveState.CHANGEPLAYLIST) {
                 this.changeActiveMedia(state.activePlaylist, prevState.activePlaylist);
-                // Delay to allow the media to change before setting the active track
-                delay(0.5, this.setActiveTrack, null, this._spotcastWebsocketService);
             }
 
             if (state.retrieveState === RetrieveState.UPDATEHASS &&
@@ -63,7 +59,7 @@ export class SpotcastHandler {
 
         UseHomeAssistantStore.setState({ accounts: accounts });
         UseHomeAssistantStore.setState({ view })
-        UseHomeAssistantStore.setState({ activeTrack: { track: player.state.item, start: player.state.is_playing } });
+        UseHomeAssistantStore.setState({ activeTrack: { track: player.state.item, isPlaying: player.state.is_playing } });
         this.setActivePlaylist(player, view);
     }
 
@@ -94,18 +90,20 @@ export class SpotcastHandler {
         UseHomeAssistantStore.setState({activePlaylist: {item: activePlaylist, start: false}});
     }
 
-    private async setActiveTrack(player?: PlayerResponse, context?: SpotcastWebsocketService) {
-        if (player == null) player = await context.fetchPlayer();
-
-        console.log("setActiveTrack: ", player);
-        UseHomeAssistantStore.setState({ activeTrack: { track: player.state.item, start: player.state.is_playing } });
-    }
-
-    private changeActiveMedia(currActivePlaylist: ActivePlaylist, prevActivePlaylist: ActivePlaylist) {
-        if(currActivePlaylist === null  || !currActivePlaylist.start || areObjectsEqual(currActivePlaylist, prevActivePlaylist)){
+    private changeActiveMedia(newActivePlaylist: ActivePlaylist, prevActivePlaylist: ActivePlaylist) {
+        if (newActivePlaylist === null ||
+            !newActivePlaylist.start ||
+            areObjectsEqual(newActivePlaylist.item, prevActivePlaylist?.item)) {
             return;
         }
 
-        this._spotcastService.playMedia(currActivePlaylist.item, this._activeAccount.entry_id);
+        this._spotcastService.playMedia(newActivePlaylist.item, this._activeAccount.entry_id);
+        delay(1, this.setActiveTrack, null, this._spotcastWebsocketService);
+    }
+
+    private async setActiveTrack(player?: PlayerResponse, context?: SpotcastWebsocketService) {
+        if (player == null) player = await context.fetchPlayer();
+        console.log(player);
+        UseHomeAssistantStore.setState({ activeTrack: { track: player.state.item, isPlaying: player.state.is_playing } });
     }
 }
