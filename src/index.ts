@@ -1,13 +1,14 @@
 import { SpotcastSpotifyCard } from "./card";
 import { CurrentlyPlayingView } from "./views/currentlyPlayingView";
 import { HeaderView } from "./views/headerView";
-import { PlayingIcon } from "./views/playingIcon";
+import { PlayingIcon } from "./views/icons/playingIcon";
 import { viewHandler } from "./handlers/viewHandler";
 import { SpotcastHandler } from "./handlers/spotcastHandler";
 import { ErrorHandler } from "./handlers/errorHandler";
 import { PlaylistSkeleton } from "./views/skeletons/playlistSkeleton";
 import { CurrentlyPlayingSkeleton } from "./views/skeletons/currentlyPlayingSkeleton";
 import { TableView } from "./views/tableView";
+import { PlayPauseIcon } from "./views/icons/playPauseIcon";
 
 declare global {
   interface Window {
@@ -17,13 +18,18 @@ declare global {
 
 // Component registry
 const customElementsRegistry = [
-  { tag: 'header-view', class: HeaderView },
-  { tag: 'currently-playing-view', class: CurrentlyPlayingView },
   { tag: 'spotcast-spotify-card', class: SpotcastSpotifyCard },
-  { tag: 'playing-icon', class: PlayingIcon },
+  { tag: 'header-view', class: HeaderView },
+  { tag: 'table-view', class: TableView },
+  { tag: 'currently-playing-view', class: CurrentlyPlayingView },
+
+  // Skeletons
   { tag: 'playlist-skeleton', class: PlaylistSkeleton },
   { tag: 'currently-playing-skeleton', class: CurrentlyPlayingSkeleton },
-  { tag: 'table-view', class: TableView}
+
+  // Icons
+  { tag: 'playing-icon', class: PlayingIcon },
+  { tag: 'play-pause-icon', class: PlayPauseIcon}
 ];
 
 // Register custom elements dynamically

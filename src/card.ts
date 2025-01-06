@@ -4,7 +4,7 @@ import { styles } from "./card.styles";
 import { servicesColl } from "home-assistant-js-websocket";
 import Config from "./models/config";
 import { HomeAssistant } from "custom-card-helpers";
-import { RetrieveState, UseHomeAssistantStore, UseViewStore, ViewStoreInitialState } from "./store";
+import { StoreState, UseHomeAssistantStore, UseViewStore, ViewStoreInitialState } from "./store";
 import { state } from "lit/decorators.js";
 
 console.info("Spotcast spotify card UI fase v0.0.3");
@@ -29,11 +29,11 @@ export class SpotcastSpotifyCard extends LitElement {
   // Updates whenever the `hass` property changes
   // This happens if anything changes state in homeassistant
   set hass(hass: HomeAssistant | undefined) {
-    UseHomeAssistantStore.setState({hass: hass, retrieveState: RetrieveState.UPDATEHASS});
+    UseHomeAssistantStore.setState({hass: hass, storeState: StoreState.UPDATEHASS});
   }
 
   setConfig(config: Config) {
-    UseHomeAssistantStore.setState({config: config, retrieveState: RetrieveState.UPDATECONFIG});
+    UseHomeAssistantStore.setState({config: config, storeState: StoreState.UPDATECONFIG});
   }
 
   connectedCallback(): void {

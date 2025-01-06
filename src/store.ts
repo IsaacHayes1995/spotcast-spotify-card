@@ -4,12 +4,11 @@ import { ViewResponse } from './models/spotcast/view';
 import { ActivePlaylist } from './models/activePlaylist';
 import { AccountResponse } from './models/spotcast/account';
 import { ActiveTrack } from './models/activeTrack';
-import { OpenPlaylist } from './models/openPlaylist';
-import { PlaylistItem } from 'models/spotcast/playlistItem';
-import { Track } from 'models/spotcast/track';
-import { TableData } from 'models/tableData';
+import { PlaylistItem } from './models/spotcast/playlistItem';
+import { Track } from './models/spotcast/track';
+import { TableData } from './models/tableData';
 
-export enum RetrieveState{
+export enum StoreState{
     INITIAL = "INITIAL",
     FINISHED = "FINISHED",
     CHANGEPLAYLIST = "CHANGEPLAYLIST",
@@ -17,6 +16,7 @@ export enum RetrieveState{
     CHANGETRACK = "CHANGETRACK",
     UPDATEHASS = "UPDATEHASS",
     UPDATECONFIG = "UPDATECONFIG",
+    PLAYMEDIA = "PLAYMEDIA"
 }
 
 export interface IHomeAssistantState {
@@ -24,7 +24,7 @@ export interface IHomeAssistantState {
     prevState: IHomeAssistantState;
     config: any;
     accounts: AccountResponse;
-    retrieveState: RetrieveState;
+    storeState: StoreState;
     view: ViewResponse;
     tableData: TableData[];
     openPlaylist: PlaylistItem;
@@ -39,7 +39,7 @@ const UseHomeAssistantStore = createStore<IHomeAssistantState>((set) => ({
     hass: null,
     prevState: null,
     config: null,
-    retrieveState: RetrieveState.INITIAL,
+    storeState: StoreState.INITIAL,
     view: null,
     tableData: null,
     openPlaylist: null,

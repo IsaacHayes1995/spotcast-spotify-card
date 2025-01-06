@@ -34,7 +34,7 @@ export class SpotcastService {
    * @param extras Optional extras to pass with the data payload.
    */
   async playMedia(
-    activeMedia: PlaylistItem,
+    spotify_uri: string,
     account?: string,
     mediaPlayer?: string,
     extras?: Record<string, any> // Flexible for additional extras
@@ -42,7 +42,7 @@ export class SpotcastService {
 
     var player = getActiveSpotcastPlayer();
     const serviceData: Record<string, any> = {
-      spotify_uri: activeMedia.uri,
+      spotify_uri,
       media_player: { entity_id: [player] },
       account,
       extras

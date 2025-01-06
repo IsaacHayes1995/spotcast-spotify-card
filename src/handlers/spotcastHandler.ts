@@ -1,5 +1,5 @@
 import { SpotcastService } from "../services/spotcastService";
-import { RetrieveState, UseHomeAssistantStore } from "../store";
+import { StoreState, UseHomeAssistantStore } from "../store";
 import { SpotcastWebsocketService } from "../services/spotcastWebsocketService";
 import { HomeAssistant } from "custom-card-helpers";
 import { PlayerResponse } from "../models/spotcast/player";
@@ -9,6 +9,7 @@ import { areObjectsEqual, delay, filterHassObject } from "../helpers/helpers";
 import { ActivePlaylist } from "../models/activePlaylist";
 import { TableData } from "../models/tableData";
 import { TrackResponse } from "../models/spotcast/track";
+import { html } from "lit";
 
 export class SpotcastHandler {
     private _spotcastService: SpotcastService;
@@ -19,21 +20,20 @@ export class SpotcastHandler {
     constructor() {
 
         UseHomeAssistantStore.subscribe(async (state, prevState) => {
-            if (state.retrieveState === RetrieveState.FINISHED || !state.hass || !state.config) return;
+            if (state.storeState === StoreState.FINISHED || !state.hass || !state.config) return;
 
             //Register services if needed, and fetch initial data if needed.
             await this.startup(state.hass);
 
-            if(state.retrieveState === RetrieveState.CHANGEPLAYLIST) {
-                this.changeActiveMedia(state.activePlaylist, prevState.activePlaylist);
+            if(state.storeState === StoreState.PLAYMEDIA) {
+                this.changeActiveMedia(state.changeData, prevState.changeData);
             }
 
-            if (state.retrieveState === RetrieveState.UPDATEHASS &&
-                this.spotifyStateChanged(state.hass, prevState.hass)) {
+            if (state.storeState === StoreState.UPDATEHASS && this.spotifyStateChanged(state.hass, prevState.hass)) {
                 this.updateMedia();
             }
 
-            if (state.retrieveState === RetrieveState.OPENPLAYLIST) {
+            if (state.storeState === StoreState.OPENPLAYLIST) {
                 this.openPlaylist(state.changeData);
             }
         })
@@ -58,13 +58,12 @@ export class SpotcastHandler {
 
         var player = await this._spotcastWebsocketService.fetchPlayer();
         var view = await this._spotcastWebsocketService.fetchView();
-
         UseHomeAssistantStore.setState({
             accounts,
             view,
             activeTrack: { track: player.state.item, isPlaying: player.state.is_playing },
             tableData: this.createTableData(view, player),
-            retrieveState: RetrieveState.FINISHED
+            storeState: StoreState.FINISHED
         });
     }
 
@@ -74,8 +73,7 @@ export class SpotcastHandler {
 
         UseHomeAssistantStore.setState({
             view,
-            tableData: this.createTableData(view, player),
-            retrieveState: RetrieveState.FINISHED
+            tableData: this.createTableData(view, player)
         })
 
         this.setActiveTrack(player);
@@ -98,18 +96,23 @@ export class SpotcastHandler {
         UseHomeAssistantStore.setState({
             openTracks: trackResponse.tracks,
             tableData,
-            retrieveState: RetrieveState.FINISHED
+            storeState: StoreState.FINISHED
         });
     }
 
-    private changeActiveMedia(newActivePlaylist: ActivePlaylist, prevActivePlaylist: ActivePlaylist) {
-        if (newActivePlaylist === null ||
-            !newActivePlaylist.start ||
-            areObjectsEqual(newActivePlaylist, prevActivePlaylist)) {
+    private async changeActiveMedia(changeData: string, prevChangeData: string) {
+        if (changeData === null || changeData ==  prevChangeData) {
             return;
         }
 
-        this._spotcastService.playMedia(newActivePlaylist.item, this._activeAccount.entry_id);
+        this._spotcastService.playMedia(changeData, this._activeAccount.entry_id);
+        var player = await this._spotcastWebsocketService.fetchPlayer();
+        var view = await this._spotcastWebsocketService.fetchView();
+
+        UseHomeAssistantStore.setState({
+            tableData: this.createTableData(view, player),
+        })
+
         delay(1, this.setActiveTrack, null, this._spotcastWebsocketService);
     }
 
@@ -118,7 +121,7 @@ export class SpotcastHandler {
 
         UseHomeAssistantStore.setState({
             activeTrack: { track: player.state.item, isPlaying: player.state.is_playing },
-            retrieveState: RetrieveState.FINISHED
+            storeState: StoreState.FINISHED
         });
     }
 
@@ -136,12 +139,14 @@ export class SpotcastHandler {
                 ? item.artists?.map((artist: { name: string }) => artist.name).join(', ')
                 : item.description,
             uri: item.uri,
-            icons: [],
+            icons: isTrack
+                ? []
+                : [html`<play-pause-icon .data="${item}"></play-pause-icon>`],
             isActive: isTrack
                 ? item.uri == activeTrackUri
                 : item.uri == activePlaylistUri,
-            isPlaying,
-            rowAction: isTrack ? null : RetrieveState.OPENPLAYLIST,
+            isPlaying: isPlaying && (item.uri == activeTrackUri || item.uri == activePlaylistUri),
+            rowAction: isTrack ? null : StoreState.OPENPLAYLIST,
         });
 
         if ('tracks' in source && Array.isArray(source.tracks)) {

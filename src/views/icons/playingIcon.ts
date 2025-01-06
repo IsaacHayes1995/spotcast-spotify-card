@@ -1,8 +1,8 @@
 import { html } from "lit";
-import { BaseView } from "./baseView";
+import { BaseView } from "../baseView";
 
 export class PlayingIcon extends BaseView {
-    
+
     public renderTemplate() {
         return html`
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 21" width="17" height="21">

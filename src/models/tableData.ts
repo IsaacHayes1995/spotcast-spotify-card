@@ -1,4 +1,5 @@
-import { RetrieveState } from "store";
+import { TemplateResult } from "lit";
+import { StoreState } from "store";
 
 export interface TableData{
     id: string;
@@ -6,8 +7,8 @@ export interface TableData{
     img: string;
     description: string;
     uri: string;
-    icons: string[];
+    icons: TemplateResult[];
     isActive: boolean;
     isPlaying: boolean;
-    rowAction: RetrieveState;
+    rowAction: StoreState;
 }

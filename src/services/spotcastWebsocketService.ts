@@ -1,4 +1,3 @@
-import { RetrieveState, UseHomeAssistantStore } from "../store";
 import { CategoriesResponse } from "../models/spotcast/category";
 import { ChromecastResponse, DevicesResponse } from "../models/spotcast/device";
 import { PlayerResponse } from "../models/spotcast/player";
@@ -7,7 +6,7 @@ import { SearchResponse } from "../models/spotcast/search";
 import { ViewResponse } from "../models/spotcast/view";
 import { HomeAssistant } from "custom-card-helpers";
 import { AccountResponse } from "models/spotcast/account";
-import { Track, TrackResponse } from "models/spotcast/track";
+import { TrackResponse } from "models/spotcast/track";
 
 /**
  * Service to handle WebSocket requests for Spotcast integration.
