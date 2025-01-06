@@ -2,7 +2,7 @@ import { html } from "lit";
 import { state } from 'lit/decorators.js';
 
 import { BaseView } from "./baseView";
-import { PlaylistItem } from "../models/spotcast/PlaylistItem";
+import { PlaylistItem } from "../models/spotcast/playlistItem";
 import { UseHomeAssistantStore } from "../store";
 import { areObjectsEqual, getBackgroundGradient, removeHtmlTags, truncateText } from "../helpers/helpers";
 import { ActiveTrack } from "models/activeTrack";

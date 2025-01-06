@@ -1,4 +1,4 @@
-import { PlaylistItem } from "models/spotcast/PlaylistItem";
+import { PlaylistItem } from "models/spotcast/playlistItem";
 import { UseHomeAssistantStore } from "../store";
 import { HomeAssistant } from "custom-card-helpers";
 import { getActiveSpotcastPlayer } from "../helpers/helpers";

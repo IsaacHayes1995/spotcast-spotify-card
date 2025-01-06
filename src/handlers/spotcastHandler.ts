@@ -7,6 +7,8 @@ import { ViewResponse } from "../models/spotcast/view";
 import { Account } from "../models/spotcast/account";
 import { areObjectsEqual, delay, filterHassObject } from "../helpers/helpers";
 import { ActivePlaylist } from "../models/activePlaylist";
+import { TableData } from "../models/tableData";
+import { TrackResponse } from "../models/spotcast/track";
 
 export class SpotcastHandler {
     private _spotcastService: SpotcastService;
@@ -31,7 +33,9 @@ export class SpotcastHandler {
                 this.updateMedia();
             }
 
-            UseHomeAssistantStore.setState({retrieveState: RetrieveState.FINISHED});
+            if (state.retrieveState === RetrieveState.OPENPLAYLIST) {
+                this.openPlaylist(state.changeData);
+            }
         })
     }
 
@@ -52,25 +56,32 @@ export class SpotcastHandler {
         var accounts = await this._spotcastWebsocketService.fetchAccounts();
         this._activeAccount = accounts?.accounts?.filter(x => x.is_default)[0];
 
-        console.log("active account: ", this._activeAccount);
-
         var player = await this._spotcastWebsocketService.fetchPlayer();
         var view = await this._spotcastWebsocketService.fetchView();
 
-        UseHomeAssistantStore.setState({ accounts: accounts });
-        UseHomeAssistantStore.setState({ view })
-        UseHomeAssistantStore.setState({ activeTrack: { track: player.state.item, isPlaying: player.state.is_playing } });
-        this.setActivePlaylist(player, view);
+        UseHomeAssistantStore.setState({
+            accounts,
+            view,
+            activeTrack: { track: player.state.item, isPlaying: player.state.is_playing },
+            tableData: this.createTableData(view, player),
+            retrieveState: RetrieveState.FINISHED
+        });
     }
 
     private async updateMedia() {
         var player = await this._spotcastWebsocketService.fetchPlayer();
         var view = await this._spotcastWebsocketService.fetchView();
 
-        UseHomeAssistantStore.setState({ view })
-        this.setActivePlaylist(player, view);
+        UseHomeAssistantStore.setState({
+            view,
+            tableData: this.createTableData(view, player),
+            retrieveState: RetrieveState.FINISHED
+        })
+
         this.setActiveTrack(player);
     }
+
+
 
     private spotifyStateChanged(state: HomeAssistant, prevState: HomeAssistant) {
         var stateMediaPlayers = filterHassObject(state, 'media_player.spotify', this._activeAccount?.spotify_id);
@@ -79,15 +90,16 @@ export class SpotcastHandler {
         return !areObjectsEqual(stateMediaPlayers, prevStateMediaPlayers);
     }
 
-    private setActivePlaylist(player: PlayerResponse, view: ViewResponse) {
-        if( player?.state?.context?.uri == null ) {
-            return;
-        }
+    private async openPlaylist(data: string) {
+        var player = await this._spotcastWebsocketService.fetchPlayer();
+        var trackResponse= await this._spotcastWebsocketService.fetchTracks(player?.account, data);
+        var tableData = this.createTableData(trackResponse, player);
 
-        var activePlaylist = view.playlists.filter((playlist) => playlist.uri == player.state.context.uri)[0];
-        activePlaylist.is_playing = player.state.is_playing;
-
-        UseHomeAssistantStore.setState({activePlaylist: {item: activePlaylist, start: false}});
+        UseHomeAssistantStore.setState({
+            openTracks: trackResponse.tracks,
+            tableData,
+            retrieveState: RetrieveState.FINISHED
+        });
     }
 
     private changeActiveMedia(newActivePlaylist: ActivePlaylist, prevActivePlaylist: ActivePlaylist) {
@@ -104,6 +116,40 @@ export class SpotcastHandler {
     private async setActiveTrack(player?: PlayerResponse, context?: SpotcastWebsocketService) {
         if (player == null) player = await context.fetchPlayer();
 
-        UseHomeAssistantStore.setState({ activeTrack: { track: player.state.item, isPlaying: player.state.is_playing } });
+        UseHomeAssistantStore.setState({
+            activeTrack: { track: player.state.item, isPlaying: player.state.is_playing },
+            retrieveState: RetrieveState.FINISHED
+        });
+    }
+
+    private createTableData(source: ViewResponse | TrackResponse, player: PlayerResponse): TableData[] {
+        const { state } = player;
+        const activePlaylistUri = state?.context?.uri;
+        const activeTrackUri = state?.item?.uri;
+        const isPlaying = state?.is_playing;
+
+        const mapItemToTableData = (item: any, isTrack: boolean): TableData => ({
+            id: item.id,
+            name: item.name,
+            img: isTrack ? item.album?.images?.[0]?.url : item.icon,
+            description: isTrack
+                ? item.artists?.map((artist: { name: string }) => artist.name).join(', ')
+                : item.description,
+            uri: item.uri,
+            icons: [],
+            isActive: isTrack
+                ? item.uri == activeTrackUri
+                : item.uri == activePlaylistUri,
+            isPlaying,
+            rowAction: isTrack ? null : RetrieveState.OPENPLAYLIST,
+        });
+
+        if ('tracks' in source && Array.isArray(source.tracks)) {
+            return source.tracks.map(track => mapItemToTableData(track, true));
+        } else if ('playlists' in source && Array.isArray(source.playlists)) {
+            return source.playlists.map(playlist => mapItemToTableData(playlist, false));
+        }
+
+        throw new Error('Invalid source data');
     }
 }

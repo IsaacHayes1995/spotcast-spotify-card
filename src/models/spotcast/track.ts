@@ -1,5 +1,6 @@
 import { Album } from "./album";
 import { Artist } from "./artist";
+import { WebSocketResponse } from "./websocketResponse";
 
 export interface Track {
     id: string;
@@ -9,4 +10,8 @@ export interface Track {
     artists: Artist[];
     album: Album;
     is_playing: boolean;
+}
+
+export interface TrackResponse extends WebSocketResponse<Track[]> {
+    tracks: Track[];
 }

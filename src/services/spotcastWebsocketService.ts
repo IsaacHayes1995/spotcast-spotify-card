@@ -7,6 +7,7 @@ import { SearchResponse } from "../models/spotcast/search";
 import { ViewResponse } from "../models/spotcast/view";
 import { HomeAssistant } from "custom-card-helpers";
 import { AccountResponse } from "models/spotcast/account";
+import { Track, TrackResponse } from "models/spotcast/track";
 
 /**
  * Service to handle WebSocket requests for Spotcast integration.
@@ -114,8 +115,8 @@ export class SpotcastWebsocketService {
    * @param url The url of the playlist
    * @returns A promise resolving to the search results.
    */
-  async fetchTracks(account?: string, playlistId: string = ''): Promise<any> {
-    return await this._callWebSocket<any>('spotcast/tracks', { account, playlistId });
+  async fetchTracks(account?: string, playlistId: string = ''): Promise<TrackResponse> {
+    return await this._callWebSocket<any>('spotcast/tracks', { account, playlist_id: playlistId });
   }
 
   /**

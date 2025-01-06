@@ -1,3 +1,3 @@
-import { PlaylistItem } from "./spotcast/PlaylistItem";
+import { PlaylistItem } from "./spotcast/playlistItem";
 
 export interface ActivePlaylist {item: PlaylistItem, start: boolean};

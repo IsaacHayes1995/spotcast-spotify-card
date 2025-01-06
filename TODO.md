@@ -1,5 +1,6 @@
 ### In Progress
 
+- [ ] Make different views available.
 - [ ] Abillity to open playlist to select individual tracks.
 
 ### Todo

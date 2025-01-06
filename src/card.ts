@@ -53,10 +53,10 @@ export class SpotcastSpotifyCard extends LitElement {
 
   getPlaylistView() {
     if(!this.playListViewReady) {
-      return html`<playlist-skeleton></playlist-skeleton>`
+      return html`<table-view></table-view>`
     }
 
-    return html`<playlist-view></playlist-view>`;
+    return html`<table-view></table-view>`;
   }
 
   getCurrentlyPlayingView() {

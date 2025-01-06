@@ -11,7 +11,7 @@ export class viewHandler {
     }
 
     isPlayListViewReady(state: ViewResponse) {
-        UseViewStore.setState({playlistViewReady: state?.playlists?.length > 0});
+        UseViewStore.setState({ playlistViewReady: state?.playlists?.length > 0 });
     }
 
     isCurrentlyPlayingViewReady(activeTrack: ActiveTrack) {
