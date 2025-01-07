@@ -10,7 +10,7 @@ import { state } from "lit/decorators.js";
 console.info("Spotcast spotify card UI fase v0.0.3");
 @customElement('spotcast-spotify-card')
 export class SpotcastSpotifyCard extends LitElement {
-  @state() playListViewReady: boolean = ViewStoreInitialState.playlistViewReady;
+  @state() playListViewReady: boolean = ViewStoreInitialState.TableReady;
   @state() currentlyPlayingViewReady: boolean = ViewStoreInitialState.currentlyPlayingViewReady;
 
   static get styles() {
@@ -21,7 +21,7 @@ export class SpotcastSpotifyCard extends LitElement {
   constructor() {
     super();
     UseViewStore.subscribe((state) => {
-      this.playListViewReady = state.playlistViewReady
+      this.playListViewReady = state.TableReady
       this.currentlyPlayingViewReady = state.currentlyPlayingViewReady
     });
   }

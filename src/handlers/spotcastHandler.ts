@@ -1,12 +1,11 @@
 import { SpotcastService } from "../services/spotcastService";
-import { StoreState, UseHomeAssistantStore } from "../store";
+import { StoreState, UseHomeAssistantStore, UseViewStore, ViewMode } from "../store";
 import { SpotcastWebsocketService } from "../services/spotcastWebsocketService";
 import { HomeAssistant } from "custom-card-helpers";
 import { PlayerResponse } from "../models/spotcast/player";
 import { ViewResponse } from "../models/spotcast/view";
 import { Account } from "../models/spotcast/account";
 import { areObjectsEqual, delay, filterHassObject } from "../helpers/helpers";
-import { ActivePlaylist } from "../models/activePlaylist";
 import { TableData } from "../models/tableData";
 import { TrackResponse } from "../models/spotcast/track";
 import { html } from "lit";
@@ -16,6 +15,7 @@ export class SpotcastHandler {
     private _spotcastWebsocketService: SpotcastWebsocketService;
 
     private _activeAccount: Account;
+    private _activePlaylist: string;
 
     constructor() {
 
@@ -45,59 +45,48 @@ export class SpotcastHandler {
         this._spotcastService = new SpotcastService(hass);
         this._spotcastWebsocketService = new SpotcastWebsocketService(hass);
 
-        // var devices = await this.fetchDevices();
-        // var search = await this.fetchSearch("mikeve97", "This is adele", "playlist");
-        // var tracks = await this.fetchTracks("mikeve97", "37i9dQZF1E8KQMxdQmr5oL");
-        // var chromecasts = await this.fetchChromecasts();
-        // var categories = await this.fetchCategories();
-        // var categoryPlaylists = await this.fetchPlaylists("mikeve97", categories.categories[0].name);
-        // var liked_tracks = await this._spotcastWebsocketService.fetchLikedMedia();
+        // const devices = await this.fetchDevices();
+        // const search = await this.fetchSearch("mikeve97", "This is adele", "playlist");
+        // const tracks = await this.fetchTracks("mikeve97", "37i9dQZF1E8KQMxdQmr5oL");
+        // const chromecasts = await this.fetchChromecasts();
+        // const categories = await this.fetchCategories();
+        // const categoryPlaylists = await this.fetchPlaylists("mikeve97", categories.categories[0].name);
+        // const liked_tracks = await this._spotcastWebsocketService.fetchLikedMedia();
 
-        var accounts = await this._spotcastWebsocketService.fetchAccounts();
+        const accounts = await this._spotcastWebsocketService.fetchAccounts();
         this._activeAccount = accounts?.accounts?.filter(x => x.is_default)[0];
 
-        var player = await this._spotcastWebsocketService.fetchPlayer();
-        var view = await this._spotcastWebsocketService.fetchView();
+        const player = await this._spotcastWebsocketService.fetchPlayer(this._activeAccount.entry_id);
+        const view = await this._spotcastWebsocketService.fetchView();
         UseHomeAssistantStore.setState({
             accounts,
-            view,
             activeTrack: { track: player.state.item, isPlaying: player.state.is_playing },
             tableData: this.createTableData(view, player),
             storeState: StoreState.FINISHED
         });
     }
 
-    private async updateMedia() {
-        var player = await this._spotcastWebsocketService.fetchPlayer();
-        var view = await this._spotcastWebsocketService.fetchView();
-
-        UseHomeAssistantStore.setState({
-            view,
-            tableData: this.createTableData(view, player)
-        })
-
-        this.setActiveTrack(player);
-    }
-
-
-
     private spotifyStateChanged(state: HomeAssistant, prevState: HomeAssistant) {
-        var stateMediaPlayers = filterHassObject(state, 'media_player.spotify', this._activeAccount?.spotify_id);
-        var prevStateMediaPlayers = filterHassObject(prevState, 'media_player.spotify', this._activeAccount?.spotify_id);
+        const stateMediaPlayers = filterHassObject(state, 'media_player.spotify', this._activeAccount?.spotify_id);
+        const prevStateMediaPlayers = filterHassObject(prevState, 'media_player.spotify', this._activeAccount?.spotify_id);
 
         return !areObjectsEqual(stateMediaPlayers, prevStateMediaPlayers);
     }
 
     private async openPlaylist(data: string) {
-        var player = await this._spotcastWebsocketService.fetchPlayer();
-        var trackResponse= await this._spotcastWebsocketService.fetchTracks(player?.account, data);
-        var tableData = this.createTableData(trackResponse, player);
+        UseViewStore.setState({ ViewMode: ViewMode.TRACK });
+
+        const player = await this._spotcastWebsocketService.fetchPlayer(this._activeAccount.entry_id);
+        const trackResponse = await this._spotcastWebsocketService.fetchTracks(this._activeAccount.entry_id, data);
+
+        const tableData = this.createTableData(trackResponse, player);
 
         UseHomeAssistantStore.setState({
-            openTracks: trackResponse.tracks,
             tableData,
             storeState: StoreState.FINISHED
         });
+
+        this._activePlaylist = data;
     }
 
     private async changeActiveMedia(changeData: string, prevChangeData: string) {
@@ -106,22 +95,20 @@ export class SpotcastHandler {
         }
 
         this._spotcastService.playMedia(changeData, this._activeAccount.entry_id);
-        var player = await this._spotcastWebsocketService.fetchPlayer();
-        var view = await this._spotcastWebsocketService.fetchView();
 
-        UseHomeAssistantStore.setState({
-            tableData: this.createTableData(view, player),
-        })
-
-        delay(1, this.setActiveTrack, null, this._spotcastWebsocketService);
+        delay(1, () => this.updateMedia());
     }
 
-    private async setActiveTrack(player?: PlayerResponse, context?: SpotcastWebsocketService) {
-        if (player == null) player = await context.fetchPlayer();
+    private async updateMedia() {
+        const player = await this._spotcastWebsocketService.fetchPlayer(this._activeAccount.entry_id);
+        const tableData = UseViewStore.getState().ViewMode == ViewMode.VIEW
+            ? await this._spotcastWebsocketService.fetchView()
+            : await this._spotcastWebsocketService.fetchTracks(this._activeAccount.entry_id, this._activePlaylist);
 
         UseHomeAssistantStore.setState({
             activeTrack: { track: player.state.item, isPlaying: player.state.is_playing },
-            storeState: StoreState.FINISHED
+            tableData: this.createTableData(tableData, player),
+            storeState: StoreState.FINISHED,
         });
     }
 

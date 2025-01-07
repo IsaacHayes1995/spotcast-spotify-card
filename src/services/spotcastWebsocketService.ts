@@ -115,7 +115,7 @@ export class SpotcastWebsocketService {
    * @returns A promise resolving to the search results.
    */
   async fetchTracks(account?: string, playlistId: string = ''): Promise<TrackResponse> {
-    return await this._callWebSocket<any>('spotcast/tracks', { account, playlist_id: playlistId });
+    return await this._callWebSocket<TrackResponse>('spotcast/tracks', { account, playlist_id: playlistId });
   }
 
   /**

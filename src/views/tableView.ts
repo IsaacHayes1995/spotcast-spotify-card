@@ -19,7 +19,6 @@ export class TableView extends BaseView{
 
     private updateTableData(data: TableData[]){
         if (data !== null && !areObjectsEqual(data, this.tableData)) {
-            console.log(data);
             this.tableData = data;
         };
     }
