@@ -37,10 +37,11 @@ export class SpotcastService {
     spotify_uri: string,
     account?: string,
     mediaPlayer?: string,
-    extras?: Record<string, any> // Flexible for additional extras
+    extras?: Record<string, any>
   ) {
 
     var player = getActiveSpotcastPlayer();
+    console.log(spotify_uri);
     const serviceData: Record<string, any> = {
       spotify_uri,
       media_player: { entity_id: [player] },

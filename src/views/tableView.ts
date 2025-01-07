@@ -24,14 +24,11 @@ export class TableView extends BaseView{
     }
 
     private rowClick(data: TableData) {
+        console.log(data);
         UseHomeAssistantStore.setState({
-            changeData: data.id,
+            changeData: data.uri,
             storeState: data.rowAction
         })
-    }
-
-    private iconClick(data: TableData) {
-
     }
 
     getNumberRow(isPlaying: boolean, index: number) {

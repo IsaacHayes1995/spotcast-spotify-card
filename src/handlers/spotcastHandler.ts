@@ -133,7 +133,7 @@ export class SpotcastHandler {
                 ? item.uri == activeTrackUri
                 : item.uri == activePlaylistUri,
             isPlaying: isPlaying && (item.uri == activeTrackUri || item.uri == activePlaylistUri),
-            rowAction: isTrack ? null : StoreState.OPENPLAYLIST,
+            rowAction: isTrack ? StoreState.PLAYMEDIA : StoreState.OPENPLAYLIST,
         });
 
         if ('tracks' in source && Array.isArray(source.tracks)) {
