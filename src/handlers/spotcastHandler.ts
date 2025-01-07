@@ -58,10 +58,17 @@ export class SpotcastHandler {
 
         const player = await this._spotcastWebsocketService.fetchPlayer(this._activeAccount.entry_id);
         const view = await this._spotcastWebsocketService.fetchView();
+        const filteredView: ViewResponse = {
+            ...view,
+            playlists: view.playlists?.filter(
+                (p) => p.uri.includes("playlist") || p.uri.includes("collection")
+            ) || [],
+        };
+
         UseHomeAssistantStore.setState({
             accounts,
             activeTrack: { track: player.state.item, isPlaying: player.state.is_playing },
-            tableData: this.createTableData(view, player),
+            tableData: this.createTableData(filteredView, player),
             storeState: StoreState.FINISHED
         });
     }
@@ -101,9 +108,20 @@ export class SpotcastHandler {
 
     private async updateMedia() {
         const player = await this._spotcastWebsocketService.fetchPlayer(this._activeAccount.entry_id);
-        const tableData = UseViewStore.getState().ViewMode == ViewMode.VIEW
-            ? await this._spotcastWebsocketService.fetchView()
-            : await this._spotcastWebsocketService.fetchTracks(this._activeAccount.entry_id, this._activePlaylist);
+        const tableData = UseViewStore.getState().ViewMode === ViewMode.VIEW
+        ? await (async () => {
+            const view = await this._spotcastWebsocketService.fetchView();
+            return {
+                ...view,
+                playlists: view.playlists?.filter(
+                    (p) => p.uri.includes("playlist") || p.uri.includes("collection")
+                ) || [],
+            } as ViewResponse;
+        })()
+        : await this._spotcastWebsocketService.fetchTracks(
+            this._activeAccount.entry_id,
+            this._activePlaylist
+        );
 
         UseHomeAssistantStore.setState({
             activeTrack: { track: player.state.item, isPlaying: player.state.is_playing },

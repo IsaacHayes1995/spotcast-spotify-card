@@ -41,7 +41,7 @@ export class SpotcastService {
   ) {
 
     var player = getActiveSpotcastPlayer();
-    console.log(spotify_uri);
+
     const serviceData: Record<string, any> = {
       spotify_uri,
       media_player: { entity_id: [player] },

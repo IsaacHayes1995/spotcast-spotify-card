@@ -24,7 +24,6 @@ export class TableView extends BaseView{
     }
 
     private rowClick(data: TableData) {
-        console.log(data);
         UseHomeAssistantStore.setState({
             changeData: data.uri,
             storeState: data.rowAction
