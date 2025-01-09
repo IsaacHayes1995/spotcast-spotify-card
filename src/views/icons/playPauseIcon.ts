@@ -6,17 +6,18 @@ import { PlaylistItem } from "models/spotcast/playlistItem";
 
 export class PlayPauseIcon extends BaseView {
   @property({ type: Object })
-  data!: PlaylistItem;
+    data!: PlaylistItem;
 
   @property({ type: Object })
-  playing!: boolean;
+    playing!: boolean;
 
   private startPlayback(event: Event): void {
     event.stopPropagation(); // Prevent click event from propagating to parent elements
-    UseHomeAssistantStore.setState({
+    UseHomeAssistantStore.setState(prev => ({
+      ...prev,
       storeState: StoreState.PLAYMEDIA,
       changeData: this.data.uri
-    })
+    }));
   }
 
   renderTemplate() {

@@ -1,6 +1,6 @@
 import { html } from "lit";
 import { BaseView } from "./baseView";
-import { StoreState, UseHomeAssistantStore } from "../store";
+import { UseHomeAssistantStore } from "../store";
 import { state } from 'lit/decorators.js';
 import { areObjectsEqual, removeHtmlTags, truncateText } from "../helpers/helpers";
 import { TableData } from "models/tableData";
@@ -24,10 +24,11 @@ export class TableView extends BaseView{
     }
 
     private rowClick(data: TableData) {
-        UseHomeAssistantStore.setState({
+        UseHomeAssistantStore.setState(prev => ({
+            ...prev,
             changeData: data.uri,
             storeState: data.rowAction
-        })
+        }));
     }
 
     getNumberRow(isPlaying: boolean, index: number) {

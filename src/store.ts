@@ -6,15 +6,16 @@ import { TableData } from './models/tableData';
 import { likedMediaResponse } from './models/spotcast/likedMedia';
 
 export enum StoreState{
-    INITIAL = "INITIAL",
-    FINISHED = "FINISHED",
-    CHANGEPLAYLIST = "CHANGEPLAYLIST",
-    OPENPLAYLIST = "OPENPLAYLIST",
-    CHANGETRACK = "CHANGETRACK",
-    UPDATEHASS = "UPDATEHASS",
-    UPDATECONFIG = "UPDATECONFIG",
-    PLAYMEDIA = "PLAYMEDIA",
-    ERROR = "ERROR"
+    INITIAL,
+    FINISHED,
+    CHANGEPLAYLIST,
+    OPENPLAYLIST,
+    CHANGETRACK,
+    LIKEMEDIA,
+    UPDATEHASS,
+    UPDATECONFIG,
+    PLAYMEDIA,
+    ERROR
 }
 
 export interface IHomeAssistantState {
