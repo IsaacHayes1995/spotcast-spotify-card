@@ -9,6 +9,5 @@ export interface TableData{
     uri: string;
     icons: TemplateResult[];
     isActive: boolean;
-    isPlaying: boolean;
     rowAction: StoreState;
 }

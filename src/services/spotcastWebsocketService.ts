@@ -1,3 +1,4 @@
+import { likedMediaResponse } from "models/spotcast/likedMedia";
 import { CategoriesResponse } from "../models/spotcast/category";
 import { ChromecastResponse, DevicesResponse } from "../models/spotcast/device";
 import { PlayerResponse } from "../models/spotcast/player";
@@ -123,8 +124,8 @@ export class SpotcastWebsocketService {
    * @param account Optional account identifier.
    * @returns A promise resolving to the search results.
    */
-  async fetchLikedMedia(account?: string): Promise<any> {
-    return await this._callWebSocket<any>('spotcast/liked_media', { account });
+  async fetchLikedMedia(account?: string): Promise<likedMediaResponse> {
+    return await this._callWebSocket<likedMediaResponse>('spotcast/liked_media', { account });
   }
 
   /**

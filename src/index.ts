@@ -9,6 +9,7 @@ import { PlaylistSkeleton } from "./views/skeletons/playlistSkeleton";
 import { CurrentlyPlayingSkeleton } from "./views/skeletons/currentlyPlayingSkeleton";
 import { TableView } from "./views/tableView";
 import { PlayPauseIcon } from "./views/icons/playPauseIcon";
+import { LikeIcon } from "./views/icons/likeIcon";
 
 declare global {
   interface Window {
@@ -29,7 +30,8 @@ const customElementsRegistry = [
 
   // Icons
   { tag: 'playing-icon', class: PlayingIcon },
-  { tag: 'play-pause-icon', class: PlayPauseIcon}
+  { tag: 'play-pause-icon', class: PlayPauseIcon },
+  { tag: 'like-icon', class: LikeIcon}
 ];
 
 // Register custom elements dynamically

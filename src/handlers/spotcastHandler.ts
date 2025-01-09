@@ -5,7 +5,7 @@ import { HomeAssistant } from "custom-card-helpers";
 import { PlayerResponse } from "../models/spotcast/player";
 import { ViewResponse } from "../models/spotcast/view";
 import { Account } from "../models/spotcast/account";
-import { areObjectsEqual, delay, filterHassObject } from "../helpers/helpers";
+import { areObjectsEqual, delay, filterHassObject, isMediaLiked } from "../helpers/helpers";
 import { TableData } from "../models/tableData";
 import { TrackResponse } from "../models/spotcast/track";
 import { html } from "lit";
@@ -51,10 +51,12 @@ export class SpotcastHandler {
         // const chromecasts = await this.fetchChromecasts();
         // const categories = await this.fetchCategories();
         // const categoryPlaylists = await this.fetchPlaylists("mikeve97", categories.categories[0].name);
-        // const liked_tracks = await this._spotcastWebsocketService.fetchLikedMedia();
+
 
         const accounts = await this._spotcastWebsocketService.fetchAccounts();
         this._activeAccount = accounts?.accounts?.filter(x => x.is_default)[0];
+
+        const likedMedia = await this._spotcastWebsocketService.fetchLikedMedia(this._activeAccount.entry_id);
 
         const player = await this._spotcastWebsocketService.fetchPlayer(this._activeAccount.entry_id);
         const view = await this._spotcastWebsocketService.fetchView();
@@ -69,6 +71,7 @@ export class SpotcastHandler {
             accounts,
             activeTrack: { track: player.state.item, isPlaying: player.state.is_playing },
             tableData: this.createTableData(filteredView, player),
+            likedMedia: likedMedia,
             storeState: StoreState.FINISHED
         });
     }
@@ -145,12 +148,11 @@ export class SpotcastHandler {
                 : item.description,
             uri: item.uri,
             icons: isTrack
-                ? []
+                ? [html`<like-icon .data="${item}" .liked="${isMediaLiked(item.uri)}"></like-icon>`]
                 : [html`<play-pause-icon .data="${item}"></play-pause-icon>`],
             isActive: isTrack
                 ? item.uri == activeTrackUri
                 : item.uri == activePlaylistUri,
-            isPlaying: isPlaying && (item.uri == activeTrackUri || item.uri == activePlaylistUri),
             rowAction: isTrack ? StoreState.PLAYMEDIA : StoreState.OPENPLAYLIST,
         });
 

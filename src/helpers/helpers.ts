@@ -159,3 +159,7 @@ export async function getBackgroundGradient(imgUrl: string): Promise<string> {
 export function delay(seconds: number, method: (...args: any[]) => void, ...args: any[]) {
   setTimeout(() => method(...args), seconds * 1000);
 }
+
+export function isMediaLiked(uri: string): boolean {
+  return UseHomeAssistantStore.getState().likedMedia?.tracks?.includes(uri) ?? false;
+}

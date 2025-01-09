@@ -3,6 +3,7 @@ import { HomeAssistant } from 'custom-card-helpers';
 import { AccountResponse } from './models/spotcast/account';
 import { ActiveTrack } from './models/activeTrack';
 import { TableData } from './models/tableData';
+import { likedMediaResponse } from './models/spotcast/likedMedia';
 
 export enum StoreState{
     INITIAL = "INITIAL",
@@ -25,6 +26,7 @@ export interface IHomeAssistantState {
     tableData: TableData[];
     activeTrack: ActiveTrack;
     changeData: string;
+    likedMedia: likedMediaResponse;
 }
 
 const UseHomeAssistantStore = createStore<IHomeAssistantState>((set) => ({
@@ -36,7 +38,8 @@ const UseHomeAssistantStore = createStore<IHomeAssistantState>((set) => ({
     tableData: null,
     activeTrack: null,
     accounts: null,
-    changeData: null
+    changeData: null,
+    likedMedia: null
 }));
 
 const HomeAssistantStoreInitialState = UseHomeAssistantStore.getInitialState();
