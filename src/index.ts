@@ -10,6 +10,7 @@ import { CurrentlyPlayingSkeleton } from "./views/skeletons/currentlyPlayingSkel
 import { TableView } from "./views/tableView";
 import { PlayPauseIcon } from "./views/icons/playPauseIcon";
 import { LikeIcon } from "./views/icons/likeIcon";
+import { DevicesIcon } from "./views/icons/devicesButton";
 
 declare global {
   interface Window {
@@ -31,7 +32,8 @@ const customElementsRegistry = [
   // Icons
   { tag: 'playing-icon', class: PlayingIcon },
   { tag: 'play-pause-icon', class: PlayPauseIcon },
-  { tag: 'like-icon', class: LikeIcon}
+  { tag: 'like-icon', class: LikeIcon },
+  { tag: 'devices-icon', class: DevicesIcon}
 ];
 
 // Register custom elements dynamically

@@ -171,7 +171,7 @@ export class SpotcastHandler {
             uri: item.uri,
             icons: isTrack
                 ? [html`<like-icon .data="${item}" .liked="${isMediaLiked(item.uri)}"></like-icon>`]
-                : [html`<play-pause-icon .data="${item}"></play-pause-icon>`],
+                : [html`<play-pause-icon .data="${item}" .playing="${item.uri == activePlaylistUri}" ></play-pause-icon>`],
             isActive: isTrack
                 ? item.uri == activeTrackUri
                 : item.uri == activePlaylistUri,
