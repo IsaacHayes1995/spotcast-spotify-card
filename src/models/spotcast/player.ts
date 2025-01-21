@@ -1,3 +1,4 @@
+import { Device } from "./device";
 import { Track } from "./track";
 
 export interface PlayerResponse {
@@ -13,7 +14,7 @@ interface PlayerState {
     };
 
     item: Track;
-
+    device: Device;
     repeat: string;
     shuffle_state: boolean;
     is_playing: boolean;

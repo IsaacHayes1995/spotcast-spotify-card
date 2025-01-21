@@ -10,7 +10,7 @@
     "watch": "vite watch",
     "build-vite": "vite build",
     "build": "webpack --mode development",
-    "build-web": "webpack --mode production"
+    "build-prod": "webpack --mode production"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.20",

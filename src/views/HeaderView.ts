@@ -74,6 +74,4 @@ export class HeaderView extends BaseView {
         </div>
         `;
     }
-
-
 }

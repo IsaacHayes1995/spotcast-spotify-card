@@ -80,36 +80,16 @@ export function filterHassObject(hass: HomeAssistant, objectType: string, userNa
 }
 
 export function areObjectsEqual<T>(obj1: T, obj2: T): boolean {
-   // If both are null or undefined, they are equal
   if (obj1 === obj2) return true;
 
-  // If one is null/undefined but not the other, they are not equal
   if (obj1 == null || obj2 == null) return false;
 
-  // If types are different, they are not equal
   if (typeof obj1 !== typeof obj2) return false;
 
   if (typeof obj1 === 'object' && typeof obj2 === 'object') {
-    const keys1 = Object.keys(obj1 as Record<string, any>);
-    const keys2 = Object.keys(obj2 as Record<string, any>);
-
-    // If the number of keys is different, objects are not equal
-    if (keys1.length !== keys2.length) return false;
-
-    // Check if all keys and values are equal
-    for (const key of keys1) {
-      if (!keys2.includes(key)) return false;
-
-      // Recursively check equality for nested objects
-      if (!areObjectsEqual((obj1 as Record<string, any>)[key], (obj2 as Record<string, any>)[key])) {
-        return false;
-      }
-    }
-
-    return true;
+    return JSON.stringify(obj1) === JSON.stringify(obj2);
   }
 
-  // For primitive types, perform strict equality check
   return false;
 }
 

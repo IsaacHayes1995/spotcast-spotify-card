@@ -1,4 +1,4 @@
-import { html, css } from "lit";
+import { html } from "lit";
 import { property } from "lit/decorators.js";
 import { BaseView } from "../baseView";
 import { StoreState, UseHomeAssistantStore } from "../../store";
@@ -6,10 +6,10 @@ import { PlaylistItem } from "models/spotcast/playlistItem";
 
 export class PlayPauseIcon extends BaseView {
   @property({ type: Object })
-    data!: PlaylistItem;
+  data!: PlaylistItem;
 
   @property({ type: Object })
-    playing!: boolean;
+  playing!: boolean;
 
   private startPlayback(event: Event): void {
     event.stopPropagation(); // Prevent click event from propagating to parent elements

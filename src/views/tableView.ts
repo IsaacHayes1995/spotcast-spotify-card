@@ -6,7 +6,8 @@ import { areObjectsEqual, removeHtmlTags, truncateText } from "../helpers/helper
 import { TableData } from "models/tableData";
 
 export class TableView extends BaseView{
-    @state() tableData: TableData[] = null;
+    @state()
+    tableData: TableData[] = null;
 
     constructor() {
         super();

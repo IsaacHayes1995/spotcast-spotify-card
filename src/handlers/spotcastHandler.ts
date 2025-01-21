@@ -9,6 +9,7 @@ import { areObjectsEqual, delay, filterHassObject, isMediaLiked } from "../helpe
 import { TableData } from "../models/tableData";
 import { TrackResponse } from "../models/spotcast/track";
 import { html } from "lit";
+import { DevicesResponse } from "models/spotcast/device";
 
 export class SpotcastHandler {
     private _spotcastService: SpotcastService;
@@ -49,20 +50,16 @@ export class SpotcastHandler {
         this._spotcastService = new SpotcastService(hass);
         this._spotcastWebsocketService = new SpotcastWebsocketService(hass);
 
-        // const devices = await this.fetchDevices();
-        // const search = await this.fetchSearch("mikeve97", "This is adele", "playlist");
-        // const tracks = await this.fetchTracks("mikeve97", "37i9dQZF1E8KQMxdQmr5oL");
-        // const chromecasts = await this.fetchChromecasts();
-        // const categories = await this.fetchCategories();
-        // const categoryPlaylists = await this.fetchPlaylists("mikeve97", categories.categories[0].name);
-
-
         const accounts = await this._spotcastWebsocketService.fetchAccounts();
         this._activeAccount = accounts?.accounts?.filter(x => x.is_default)[0];
+
+        const devices = await this._spotcastWebsocketService.fetchDevices();
+        const chromecasts = await this._spotcastWebsocketService.fetchChromecasts()
 
         const likedMedia = await this._spotcastWebsocketService.fetchLikedMedia(this._activeAccount.entry_id);
 
         const player = await this._spotcastWebsocketService.fetchPlayer(this._activeAccount.entry_id);
+
         const view = await this._spotcastWebsocketService.fetchView();
         const filteredView: ViewResponse = {
             ...view,
@@ -75,6 +72,9 @@ export class SpotcastHandler {
             ...prev,
             accounts,
             activeTrack: { track: player.state.item, isPlaying: player.state.is_playing },
+            activeDevice: player.state.device,
+            devices,
+            chromecasts,
             tableData: this.createTableData(filteredView, player),
             likedMedia: likedMedia,
             storeState: StoreState.FINISHED

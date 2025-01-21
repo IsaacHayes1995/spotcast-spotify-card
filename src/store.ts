@@ -4,8 +4,9 @@ import { AccountResponse } from './models/spotcast/account';
 import { ActiveTrack } from './models/activeTrack';
 import { TableData } from './models/tableData';
 import { likedMediaResponse } from './models/spotcast/likedMedia';
+import { Device, DevicesResponse } from './models/spotcast/device';
 
-export enum StoreState{
+export enum StoreState {
     INITIAL,
     FINISHED,
     CHANGEPLAYLIST,
@@ -23,14 +24,17 @@ export interface IHomeAssistantState {
     prevState: IHomeAssistantState;
     config: any;
     accounts: AccountResponse;
+    devices: DevicesResponse;
+    chromeCastDevices: DevicesResponse;
     storeState: StoreState;
     tableData: TableData[];
     activeTrack: ActiveTrack;
+    activeDevice: Device;
     changeData: string;
     likedMedia: likedMediaResponse;
 }
 
-const UseHomeAssistantStore = createStore<IHomeAssistantState>((set) => ({
+const UseHomeAssistantStore = createStore<IHomeAssistantState>(_ => ({
     hass: null,
     prevState: null,
     config: null,
@@ -38,7 +42,10 @@ const UseHomeAssistantStore = createStore<IHomeAssistantState>((set) => ({
     view: null,
     tableData: null,
     activeTrack: null,
+    activeDevice: null,
     accounts: null,
+    devices: null,
+    chromeCastDevices: null,
     changeData: null,
     likedMedia: null
 }));
@@ -46,8 +53,7 @@ const UseHomeAssistantStore = createStore<IHomeAssistantState>((set) => ({
 const HomeAssistantStoreInitialState = UseHomeAssistantStore.getInitialState();
 export { HomeAssistantStoreInitialState, UseHomeAssistantStore };
 
-
-export enum ViewMode{
+export enum ViewMode {
     PLAYLIST,
     VIEW,
     TRACK
